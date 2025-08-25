@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public class DiceRolling : MonoBehaviour
 {
@@ -18,17 +18,22 @@ public class DiceRolling : MonoBehaviour
     public bool randomizeSpinAxisEachPickup = true;
 
     Camera cam;
-    Rigidbody held;
     Vector3 planePoint;
-    Vector3 localGrabOffset;
-    bool lifting;
-    Vector3 targetPos;
-    bool wasKinematic;
-    bool wasUseGravity;
-    RigidbodyInterpolation wasInterp;
-    float wasDrag;
-    float wasAngularDrag;
-    Vector3 spinAxis;
+
+    class HeldState
+    {
+        public Rigidbody rb;
+        public Vector3 localGrabOffset;
+        public bool lifting;
+        public bool wasKinematic;
+        public bool wasUseGravity;
+        public RigidbodyInterpolation wasInterp;
+        public float wasDrag;
+        public float wasAngularDrag;
+        public Vector3 spinAxis;
+    }
+
+    readonly List<HeldState> held = new();
 
     void Awake()
     {
@@ -40,88 +45,160 @@ public class DiceRolling : MonoBehaviour
     {
         if (forceCursor) { Cursor.visible = true; Cursor.lockState = CursorLockMode.None; }
 
-        if (Input.GetMouseButtonDown(0)) TryPick();
-        if (Input.GetMouseButtonUp(0)) Release();
+        if (Input.GetMouseButtonDown(0)) TryPickSingle();
+        if (Input.GetMouseButtonUp(0)) ReleaseAll();
 
-        if (!held) return;
+        if (held.Count == 0) return;
 
         var p = new Plane(planeNormal.normalized, planePoint + planeNormal.normalized * dragHeight);
         var ray = cam.ScreenPointToRay(Input.mousePosition);
-        if (p.Raycast(ray, out var enter))
-            targetPos = ray.GetPoint(enter);
-        else
-            targetPos = held.position;
+        Vector3 targetPos;
+        if (p.Raycast(ray, out var enter)) targetPos = ray.GetPoint(enter);
+        else targetPos = held[0].rb.position;
 
-        var grabWorld = held.transform.TransformPoint(localGrabOffset);
-        var offset = grabWorld - held.position;
-        var desired = targetPos - offset;
+        for (int i = 0; i < held.Count; i++)
+        {
+            var h = held[i];
+            if (!h.rb) continue;
 
-        if (lifting)
-        {
-            var lifted = Vector3.Lerp(held.position, desired, 1f - Mathf.Exp(-pickupLiftLerp * Time.deltaTime));
-            held.linearVelocity = (lifted - held.position) / Mathf.Max(Time.deltaTime, 0.0001f);
-            if ((lifted - desired).sqrMagnitude < 0.0004f) lifting = false;
-        }
-        else
-        {
-            var toTarget = desired - held.position;
-            held.linearVelocity = toTarget * followSpeed;
+            var grabWorld = h.rb.transform.TransformPoint(h.localGrabOffset);
+            var offset = grabWorld - h.rb.position;
+            var desired = targetPos - offset;
+
+            if (h.lifting)
+            {
+                var lifted = Vector3.Lerp(h.rb.position, desired, 1f - Mathf.Exp(-pickupLiftLerp * Time.deltaTime));
+                h.rb.linearVelocity = (lifted - h.rb.position) / Mathf.Max(Time.deltaTime, 0.0001f);
+                if ((lifted - desired).sqrMagnitude < 0.0004f) h.lifting = false;
+            }
+            else
+            {
+                var toTarget = desired - h.rb.position;
+                h.rb.linearVelocity = toTarget * followSpeed;
+            }
         }
     }
 
     void FixedUpdate()
     {
-        if (!held) return;
+        if (held.Count == 0) return;
+
         if (spinWhileHeld)
         {
             float radPerSec = spinSpeedDegPerSec * Mathf.Deg2Rad;
-            held.angularVelocity = spinAxis * radPerSec;
+            for (int i = 0; i < held.Count; i++)
+            {
+                var h = held[i];
+                if (!h.rb) continue;
+                h.rb.angularVelocity = h.spinAxis * radPerSec;
+            }
         }
         else
         {
-            held.angularVelocity = Vector3.zero;
+            for (int i = 0; i < held.Count; i++)
+            {
+                var h = held[i];
+                if (!h.rb) continue;
+                h.rb.angularVelocity = Vector3.zero;
+            }
         }
     }
 
-    void TryPick()
+    void TryPickSingle()
     {
-        if (held) return;
+        if (held.Count > 0) return;
+
         var ray = cam.ScreenPointToRay(Input.mousePosition);
         if (!Physics.Raycast(ray, out var hit, maxPickDistance, pickMask, QueryTriggerInteraction.Ignore)) return;
         var rb = hit.rigidbody; if (!rb) return;
 
         planePoint = hit.point;
-        held = rb;
-        wasKinematic = held.isKinematic;
-        wasUseGravity = held.useGravity;
-        wasInterp = held.interpolation;
-        wasDrag = held.linearDamping;
-        wasAngularDrag = held.angularDamping;
 
-        held.isKinematic = false;
-        held.useGravity = false;
-        held.interpolation = RigidbodyInterpolation.Interpolate;
-        held.linearDamping = 5f;
-        held.angularDamping = 5f;
-
-        localGrabOffset = centerOnPickup ? Vector3.zero : held.transform.InverseTransformPoint(hit.point);
-        lifting = true;
-
-        if (randomizeSpinAxisEachPickup)
-            spinAxis = Random.onUnitSphere.normalized;
-        else
-            spinAxis = Vector3.up;
+        var hs = MakeHeldState(rb, hit.point);
+        held.Add(hs);
     }
 
-    void Release()
+    HeldState MakeHeldState(Rigidbody rb, Vector3 hitPoint)
     {
-        if (!held) return;
-        held.useGravity = wasUseGravity;
-        held.isKinematic = wasKinematic;
-        held.interpolation = wasInterp;
-        held.linearDamping = wasDrag;
-        held.angularDamping = wasAngularDrag;
-        held = null;
-        lifting = false;
+        var hs = new HeldState();
+        hs.rb = rb;
+        hs.wasKinematic = rb.isKinematic;
+        hs.wasUseGravity = rb.useGravity;
+        hs.wasInterp = rb.interpolation;
+        hs.wasDrag = rb.linearDamping;
+        hs.wasAngularDrag = rb.angularDamping;
+
+        rb.isKinematic = false;
+        rb.useGravity = false;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.linearDamping = 5f;
+        rb.angularDamping = 5f;
+
+        hs.localGrabOffset = centerOnPickup ? Vector3.zero : rb.transform.InverseTransformPoint(hitPoint);
+        hs.lifting = true;
+
+        if (randomizeSpinAxisEachPickup) hs.spinAxis = Random.onUnitSphere.normalized;
+        else hs.spinAxis = Vector3.up;
+
+        return hs;
+    }
+
+    public void BeginHoldGroup(IEnumerable<Rigidbody> rbs)
+    {
+        held.Clear();
+
+        var ray = cam.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out var hit, maxPickDistance, pickMask, QueryTriggerInteraction.Ignore))
+            planePoint = hit.point;
+        else
+            planePoint = cam.transform.position + cam.transform.forward * 2f;
+
+        foreach (var rb in rbs)
+        {
+            if (!rb) continue;
+            var hs = MakeHeldState(rb, rb.position);
+            hs.localGrabOffset = Vector3.zero;
+            held.Add(hs);
+        }
+    }
+
+    public void SpawnFromStashAndBeginHold(float spreadRadius = 0.15f)
+    {
+        if (DiceStash.Instance == null) return;
+
+        var ray = cam.ScreenPointToRay(Input.mousePosition);
+        Vector3 basePos;
+        if (Physics.Raycast(ray, out var hit, 500f, pickMask, QueryTriggerInteraction.Ignore))
+            basePos = hit.point + planeNormal.normalized * dragHeight;
+        else
+            basePos = cam.transform.position + cam.transform.forward * 2f;
+
+        var spawned = new List<Rigidbody>();
+        foreach (var prefab in DiceStash.Instance.dice)
+        {
+            if (!prefab) continue;
+            var inst = Instantiate(prefab, basePos + Random.insideUnitSphere * spreadRadius, Random.rotation);
+            var rb = inst.GetComponent<Rigidbody>();
+            if (rb) spawned.Add(rb);
+        }
+
+        BeginHoldGroup(spawned);
+    }
+
+    public void ReleaseAll()
+    {
+        if (held.Count == 0) return;
+
+        for (int i = 0; i < held.Count; i++)
+        {
+            var h = held[i];
+            if (!h.rb) continue;
+            h.rb.useGravity = h.wasUseGravity;
+            h.rb.isKinematic = h.wasKinematic;
+            h.rb.interpolation = h.wasInterp;
+            h.rb.linearDamping = h.wasDrag;
+            h.rb.angularDamping = h.wasAngularDrag;
+        }
+        held.Clear();
     }
 }
