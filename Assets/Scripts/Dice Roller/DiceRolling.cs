@@ -137,8 +137,7 @@ public class DiceRolling : MonoBehaviour
         hs.localGrabOffset = centerOnPickup ? Vector3.zero : rb.transform.InverseTransformPoint(hitPoint);
         hs.lifting = true;
 
-        if (randomizeSpinAxisEachPickup) hs.spinAxis = Random.onUnitSphere.normalized;
-        else hs.spinAxis = Vector3.up;
+        hs.spinAxis = randomizeSpinAxisEachPickup ? Random.onUnitSphere.normalized : Vector3.up;
 
         return hs;
     }
@@ -179,7 +178,12 @@ public class DiceRolling : MonoBehaviour
             if (!prefab) continue;
             var inst = Instantiate(prefab, basePos + Random.insideUnitSphere * spreadRadius, Random.rotation);
             var rb = inst.GetComponent<Rigidbody>();
-            if (rb) spawned.Add(rb);
+            if (rb)
+            {
+                var reader = inst.GetComponent<DiceTopReader>();
+                if (reader) DiceRollManager.Instance?.Register(reader);
+                spawned.Add(rb);
+            }
         }
 
         BeginHoldGroup(spawned);
