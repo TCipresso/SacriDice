@@ -4,6 +4,8 @@
 TagManager:
   serializedVersion: 3
   tags:
+tags:
+  - Dice
   - BuyableItem
   layers:
   - Default
@@ -12,7 +14,7 @@ TagManager:
   - BuyableItem
   - Water
   - UI
-  - 
+  - Dice
   - 
   - 
   - 
