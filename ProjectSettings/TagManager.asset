@@ -4,12 +4,14 @@
 TagManager:
   serializedVersion: 3
   tags:
+tags:
   - Dice
+  - BuyableItem
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - BuyableItem
   - Water
   - UI
   - Dice
