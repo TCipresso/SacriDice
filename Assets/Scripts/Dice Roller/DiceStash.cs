@@ -28,9 +28,9 @@ public class DiceStash : MonoBehaviour
             var db = d.GetComponent<DiceBase>();
             if (db == null || db.uiPromptSprite == null) continue;
 
-            var iconObj = Instantiate(uiImagePrefab, parent);
-            var img = iconObj.GetComponent<Image>();
-            if (img) img.sprite = db.uiPromptSprite;
+            GameObject newIcon = Instantiate(uiImagePrefab, parent);
+            Image img = newIcon.GetComponent<Image>();
+            if (img != null) img.sprite = db.uiPromptSprite;
         }
     }
 }
