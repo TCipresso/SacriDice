@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class DiceCinematicSequencer : MonoBehaviour
 {
@@ -9,11 +10,11 @@ public class DiceCinematicSequencer : MonoBehaviour
     public float homeFOV = 60f;
 
     [Header("Shot layout")]
-    public float shotHeight = 0.5f;      // fixed height above die
-    public float radiusMin = 0.3f;       // random horizontal offset radius
+    public float shotHeight = 0.5f;
+    public float radiusMin = 0.3f;
     public float radiusMax = 0.7f;
-    public float shotFOV = 35f;          // tighter FOV for hero shot
-    public bool useGroundNormal = true;  // use table normal instead of world up
+    public float shotFOV = 35f;
+    public bool useGroundNormal = true;
     public LayerMask groundMask = ~0;
     public float groundRayLength = 1.0f;
 
@@ -21,11 +22,23 @@ public class DiceCinematicSequencer : MonoBehaviour
     public float moveDuration = 0.6f;
     public float holdDuration = 0.45f;
     public float returnDuration = 0.7f;
-    public AnimationCurve ease = null;   // if null, EaseInOut
+    public AnimationCurve ease = null;
+
+    [Header("UI")]
+    public TextMeshProUGUI totalTMP;            // <-- assign your TMP Text here
+    public string totalPrefix = "";             // e.g. "Total: "
+    public float addNumberAnimTime = 0.3f;      // how long to animate the increase
 
     bool playing;
 
-    struct Shot { public Vector3 pos; public Quaternion rot; public float fov; public Transform look; }
+    struct Shot
+    {
+        public Vector3 pos;
+        public Quaternion rot;
+        public float fov;
+        public Transform look;
+        public int dieValue;    // parsed int value for this die
+    }
 
     void Awake()
     {
@@ -33,7 +46,7 @@ public class DiceCinematicSequencer : MonoBehaviour
         if (ease == null) ease = AnimationCurve.EaseInOut(0, 0, 1, 1);
     }
 
-    // Call this once when all dice are settled
+    // Call this when all dice are settled (from DiceRollManager)
     public void PlayComputedForSettled()
     {
         if (playing || !cam || !homePose) return;
@@ -52,7 +65,10 @@ public class DiceCinematicSequencer : MonoBehaviour
             var dir = (C - pos).normalized;
             var rot = Quaternion.LookRotation(dir, U);
 
-            shots.Add(new Shot { pos = pos, rot = rot, fov = shotFOV, look = r.transform });
+            // parse the die’s rolled value
+            int dieVal = ParseIntSafe(r.resultValue);
+
+            shots.Add(new Shot { pos = pos, rot = rot, fov = shotFOV, look = r.transform, dieValue = dieVal });
         }
 
         if (shots.Count == 0) return;
@@ -70,7 +86,6 @@ public class DiceCinematicSequencer : MonoBehaviour
 
     Vector3 RandomHorizontal(Vector3 up, float degrees, float radius)
     {
-        // Build an orthonormal basis (X,Z) spanning the plane perpendicular to 'up'
         Vector3 any = Mathf.Abs(Vector3.Dot(up, Vector3.up)) > 0.9f ? Vector3.right : Vector3.up;
         Vector3 x = Vector3.Normalize(Vector3.Cross(up, any));
         Vector3 z = Vector3.Normalize(Vector3.Cross(up, x));
@@ -82,26 +97,50 @@ public class DiceCinematicSequencer : MonoBehaviour
     {
         playing = true;
 
+        // initialize UI
+        int runningTotal = 0;
+        if (totalTMP) totalTMP.text = totalPrefix + "0";
+
         for (int i = 0; i < shots.Count; i++)
         {
             var s = shots[i];
+
+            // move in
             yield return MoveCam(cam.transform.position, cam.transform.rotation, cam.fieldOfView,
                                  s.pos, s.rot, s.fov, moveDuration);
 
+            // hold and update UI to include this die’s value
             float t = 0f;
+            // number animation: from old to new over addNumberAnimTime
+            int startVal = runningTotal;
+            int endVal = runningTotal + Mathf.Max(0, s.dieValue);
             while (t < holdDuration)
             {
                 t += Time.deltaTime;
+
+                // look correction during hold (optional)
                 if (s.look)
                 {
                     var U = GetRefUp(s.look.position);
                     var want = Quaternion.LookRotation((s.look.position - cam.transform.position).normalized, U);
                     cam.transform.rotation = Quaternion.Slerp(cam.transform.rotation, want, 0.25f);
                 }
+
+                // animate number at the beginning of the hold
+                if (totalTMP)
+                {
+                    float nt = Mathf.Clamp01(t / Mathf.Max(0.0001f, addNumberAnimTime));
+                    int shown = Mathf.RoundToInt(Mathf.Lerp(startVal, endVal, nt));
+                    totalTMP.text = totalPrefix + shown.ToString();
+                }
+
                 yield return null;
             }
+
+            runningTotal = endVal; // commit
         }
 
+        // return to home
         yield return MoveCam(cam.transform.position, cam.transform.rotation, cam.fieldOfView,
                              homePose.position, homePose.rotation, homeFOV, returnDuration);
 
@@ -124,5 +163,12 @@ public class DiceCinematicSequencer : MonoBehaviour
         }
         cam.transform.SetPositionAndRotation(toPos, toRot);
         cam.fieldOfView = toFOV;
+    }
+
+    static int ParseIntSafe(string s)
+    {
+        if (int.TryParse(s, out var v)) return v;
+        // If your sideValues contain non-numeric labels like "Crit", return a value or 0 here.
+        return 0;
     }
 }
