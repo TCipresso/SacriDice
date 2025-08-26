@@ -6,7 +6,6 @@ public class DiceRolling : MonoBehaviour
     public LayerMask pickMask = ~0;
     public float followSpeed = 28f;
     public float maxPickDistance = 200f;
-    public bool forceCursor = true;
 
     public Vector3 planeNormal = Vector3.up;
     public float dragHeight = 0.6f;
@@ -43,7 +42,10 @@ public class DiceRolling : MonoBehaviour
 
     void Update()
     {
-        if (forceCursor) { Cursor.visible = true; Cursor.lockState = CursorLockMode.None; }
+        // If player isn't Active, ignore ALL input & motion updates
+        if (PlayerStateMachine.Instance &&
+            PlayerStateMachine.Instance.CurrentState != PlayerStateMachine.State.Active)
+            return;
 
         if (Input.GetMouseButtonDown(0)) TryPickSingle();
         if (Input.GetMouseButtonUp(0)) ReleaseAll();
@@ -52,9 +54,8 @@ public class DiceRolling : MonoBehaviour
 
         var p = new Plane(planeNormal.normalized, planePoint + planeNormal.normalized * dragHeight);
         var ray = cam.ScreenPointToRay(Input.mousePosition);
-        Vector3 targetPos;
+        Vector3 targetPos = held[0].rb ? held[0].rb.position : Vector3.zero;
         if (p.Raycast(ray, out var enter)) targetPos = ray.GetPoint(enter);
-        else targetPos = held[0].rb.position;
 
         for (int i = 0; i < held.Count; i++)
         {
@@ -106,6 +107,11 @@ public class DiceRolling : MonoBehaviour
 
     void TryPickSingle()
     {
+        // extra guard here too
+        if (PlayerStateMachine.Instance &&
+            PlayerStateMachine.Instance.CurrentState != PlayerStateMachine.State.Active)
+            return;
+
         if (held.Count > 0) return;
 
         var ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -137,8 +143,7 @@ public class DiceRolling : MonoBehaviour
         hs.localGrabOffset = centerOnPickup ? Vector3.zero : rb.transform.InverseTransformPoint(hitPoint);
         hs.lifting = true;
 
-        if (randomizeSpinAxisEachPickup) hs.spinAxis = Random.onUnitSphere.normalized;
-        else hs.spinAxis = Vector3.up;
+        hs.spinAxis = randomizeSpinAxisEachPickup ? Random.onUnitSphere.normalized : Vector3.up;
 
         return hs;
     }
@@ -179,7 +184,12 @@ public class DiceRolling : MonoBehaviour
             if (!prefab) continue;
             var inst = Instantiate(prefab, basePos + Random.insideUnitSphere * spreadRadius, Random.rotation);
             var rb = inst.GetComponent<Rigidbody>();
-            if (rb) spawned.Add(rb);
+            if (rb)
+            {
+                var reader = inst.GetComponent<DiceTopReader>();
+                if (reader) DiceRollManager.Instance?.Register(reader);
+                spawned.Add(rb);
+            }
         }
 
         BeginHoldGroup(spawned);
@@ -200,5 +210,8 @@ public class DiceRolling : MonoBehaviour
             h.rb.angularDamping = h.wasAngularDrag;
         }
         held.Clear();
+
+        // Immediately switch to InActive on release
+        PlayerStateMachine.Instance?.SetInactive();
     }
 }
