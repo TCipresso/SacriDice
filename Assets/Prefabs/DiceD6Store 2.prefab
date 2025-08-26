@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5149897709509151253}
   - component: {fileID: 8428040208931722965}
   - component: {fileID: 1229330782157234499}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: PriceTag
   m_TagString: BuyableItem
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: -6219566196629248308}
   - component: {fileID: 6175264582233460833}
   - component: {fileID: 6054495045086137284}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: DiceD6Store 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -329,7 +329,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4729745859372735265, guid: d475b060f7d508d458f147fb57eae3ba, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4729745859372735265, guid: d475b060f7d508d458f147fb57eae3ba, type: 3}
       propertyPath: m_TagString

@@ -145,6 +145,7 @@ public class DiceCinematicSequencer : MonoBehaviour
                              homePose.position, homePose.rotation, homeFOV, returnDuration);
 
         playing = false;
+        PlayerStateMachine.Instance?.SetActive();
     }
 
     IEnumerator MoveCam(Vector3 fromPos, Quaternion fromRot, float fromFOV,
