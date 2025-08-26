@@ -11,6 +11,9 @@ public abstract class Item : MonoBehaviour, IClickable
     [Header("World-Space Price Tag (TMP)")]
     public TextMeshPro priceTag;
 
+    [Header("Prefab Reference")]
+    public GameObject RealDice;
+
     protected virtual void Awake()
     {
         RefreshPriceTag();

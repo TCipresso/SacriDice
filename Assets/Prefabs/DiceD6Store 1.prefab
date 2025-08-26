@@ -198,11 +198,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3846940812229511063}
-  - component: {fileID: 8825799595924278713}
-  - component: {fileID: -6347983983362794541}
-  - component: {fileID: 2938354702756671174}
+  - component: {fileID: -6219566196629248308}
+  - component: {fileID: 6175264582233460833}
+  - component: {fileID: 6054495045086137284}
   m_Layer: 3
-  m_Name: CubeParent 2
+  m_Name: DiceD6Store 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -225,7 +225,7 @@ Transform:
   - {fileID: 6118877990534477905}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &8825799595924278713
+--- !u!65 &-6219566196629248308
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -246,7 +246,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.02, y: 2.73, z: 1.02}
   m_Center: {x: 0, y: 0.8549998, z: 0}
---- !u!114 &-6347983983362794541
+--- !u!114 &6175264582233460833
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -259,7 +259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   padding: {x: 0.02, y: 0.02, z: 0.02}
---- !u!114 &2938354702756671174
+--- !u!114 &6054495045086137284
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -268,12 +268,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7580788352548448415}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a211ad5b736e5c4cb4012821853744e, type: 3}
+  m_Script: {fileID: 11500000, guid: 90af5a69ef79c344a872d4b8fa55c461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemName: dice
+  ItemName: D6 Dice
   Price: 7
   priceTag: {fileID: 8428040208931722965}
+  RealDice: {fileID: 1326015795729701355, guid: de41e61af4cef504091fb470c96da986, type: 3}
 --- !u!1001 &185185442269258900
 PrefabInstance:
   m_ObjectHideFlags: 0
