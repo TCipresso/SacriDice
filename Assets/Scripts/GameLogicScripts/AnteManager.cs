@@ -38,13 +38,21 @@ public class AnteManager : MonoBehaviour
 
         Debug.Log($"[ANTE] Round {currentRoundIndex}/{maxRounds}: +{roundTotal}  -> Total {cumulativeTotal}/{targetAnte}");
 
+        // Early win before final round
         if (cumulativeTotal >= targetAnte && !earlyWin && currentRoundIndex < maxRounds)
         {
             earlyWin = true;
             Debug.Log("[ANTE] EARLY WIN: target reached before final round.");
-            // optional: trigger early-win UI
+
+            // Clear out per-round dice since we skip remaining rounds
+            if (DiceStash.Instance)
+            {
+                DiceStash.Instance.ResetGenDiceList();
+                DiceStash.Instance.ResetCurrStash();
+            }
         }
 
+        // After the final round
         if (currentRoundIndex >= maxRounds)
         {
             if (cumulativeTotal >= targetAnte)
@@ -52,9 +60,10 @@ public class AnteManager : MonoBehaviour
             else
                 Debug.Log("[ANTE] LOSS: target not met after final round.");
 
-            // (Do NOT reset here; we prepare the next loop when entering Shop)
+            // Do NOT reset here; Shop handles reset before next loop
         }
     }
+
 
     /// <summary>
     /// Called when entering the Shop after a 3-round loop (or early win).

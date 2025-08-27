@@ -15263,7 +15263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7525405f4a80d90458d7f36f8cc43580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetAnte: 32
+  targetAnte: 1
   maxRounds: 3
   anteStep: 8
   anteTMP: {fileID: 1975409214}
