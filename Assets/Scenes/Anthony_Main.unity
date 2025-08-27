@@ -1319,6 +1319,7 @@ MonoBehaviour:
   ItemName: dice
   Price: 5
   priceTag: {fileID: 0}
+  RealDice: {fileID: 0}
 --- !u!65 &183605508
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -28940,8 +28941,16 @@ MonoBehaviour:
   shopUIRoot: {fileID: 1364684946}
   shopItemPrefabs:
   - {fileID: 7580788352548448415, guid: 260cd32e637f85c488fae52652d41d3e, type: 3}
-  - {fileID: 7580788352548448415, guid: f81eef5e90aa4ff45a2a910ead7b0e22, type: 3}
-  - {fileID: 7580788352548448415, guid: 6622ad4f658de1a40b5a15d7803f2e5e, type: 3}
+  - {fileID: 7580788352548448415, guid: fa8af94a9e3da654185e3c12726c7a87, type: 3}
+  - {fileID: 7580788352548448415, guid: f955e9fab6de1ca4189d96f544e5a6d7, type: 3}
+  - {fileID: 7580788352548448415, guid: dba44812963c9f745b158a1686d196db, type: 3}
+  - {fileID: 7580788352548448415, guid: f98dde08d6a98ec448b72c743278f484, type: 3}
+  - {fileID: 7580788352548448415, guid: 7be4cc1dd8f0f424f915ac377225f592, type: 3}
+  - {fileID: 7580788352548448415, guid: 368c8e9e573c250478c4820cf40669d9, type: 3}
+  - {fileID: 7580788352548448415, guid: 5b1c7a4f356d8444194ac9f7ac825f71, type: 3}
+  - {fileID: 7580788352548448415, guid: 0ecd5ed96624de04ba5fa3e04ece471e, type: 3}
+  - {fileID: 7580788352548448415, guid: 0ecd5ed96624de04ba5fa3e04ece471e, type: 3}
+  - {fileID: 7580788352548448415, guid: 38faf0680ccad894aa7d47729780b2b6, type: 3}
   startAnchor: {fileID: 2099363129}
   endAnchor: {fileID: 176417660}
   spacing: 3
