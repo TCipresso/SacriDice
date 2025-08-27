@@ -24,5 +24,6 @@ public class ShopState : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         RoundStateMachine.Instance.ChangeState(RoundStateMachine.RoundState.Round1);
+        //RoundStateMachine.Instance.rollUICanvasGroup.alpha = 1f;
     }
 }

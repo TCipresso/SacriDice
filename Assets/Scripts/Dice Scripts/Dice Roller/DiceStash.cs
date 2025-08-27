@@ -19,59 +19,39 @@ public class DiceStash : MonoBehaviour
     [Header("Current Stash (this round = Gen + Bought)")]
     public List<GameObject> CurrStash = new();       // used for UI & spawning this round
 
-    // Legacy list to avoid breaking existing references. Mirrors CurrStash.
-    [System.Obsolete("Use CurrStash instead.")]
-    public List<GameObject> dice = new();
-
     void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
     }
 
     // ---------- Generated Dice (per round) ----------
     public void AddGenDice(int count)
     {
-        if (GenDice == null || count <= 0) return;
-        for (int i = 0; i < count; i++)
-            CurrGenDiceList.Add(GenDice);
+        if (!GenDice || count <= 0) return;
+        for (int i = 0; i < count; i++) CurrGenDiceList.Add(GenDice);
     }
 
-    public void ResetGenDiceList()
-    {
-        CurrGenDiceList.Clear();
-    }
+    public void ResetGenDiceList() => CurrGenDiceList.Clear();
 
     // ---------- Purchased Dice (persistent) ----------
     public void AddBoughtDie(GameObject prefab)
     {
-        if (prefab == null) return;
+        if (!prefab) return;
         BoughtDiceList.Add(prefab);
     }
 
     // ---------- Current Stash Management ----------
-    public void ResetCurrStash()
-    {
-        CurrStash.Clear();
-        dice.Clear(); // keep legacy mirrored
-    }
+    public void ResetCurrStash() => CurrStash.Clear();
 
     /// <summary>
     /// Rebuilds CurrStash from CurrGenDiceList + BoughtDiceList (in that order).
-    /// Also mirrors to legacy 'dice' list for backward compatibility.
     /// </summary>
     public void RebuildCurrStash()
     {
         CurrStash.Clear();
         CurrStash.AddRange(CurrGenDiceList);
         CurrStash.AddRange(BoughtDiceList);
-
-        dice.Clear();
-        dice.AddRange(CurrStash);
     }
 
     // ---------- UI ----------
@@ -91,7 +71,7 @@ public class DiceStash : MonoBehaviour
             var db = d.GetComponent<DiceBase>();
             if (db == null || db.uiPromptSprite == null) continue;
 
-            var icon = Instantiate(uiImagePrefab, parent);
+            var icon = Object.Instantiate(uiImagePrefab, parent);
             var img = icon.GetComponent<Image>();
             if (img) img.sprite = db.uiPromptSprite;
         }

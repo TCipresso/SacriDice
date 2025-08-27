@@ -18,6 +18,7 @@ public class RoundStateMachine : MonoBehaviour
     public Round2State round2State;
     public Round3State round3State;
     public ShopState shopState;
+    //public CanvasGroup rollUICanvasGroup;
 
     [Header("State Flags")]
     public bool round1Flag;
@@ -96,5 +97,26 @@ public class RoundStateMachine : MonoBehaviour
     {
         ChangeState(RoundState.Round1);
     }
+
+    public RoundState GetNextState()
+    {
+        // Clear dice lists before moving to the next state
+        if (DiceStash.Instance != null)
+        {
+            DiceStash.Instance.ResetGenDiceList();
+            DiceStash.Instance.ResetCurrStash();
+        }
+
+        return currentState switch
+        {
+            RoundState.Round1 => RoundState.Round2,
+            RoundState.Round2 => RoundState.Round3,
+            RoundState.Round3 => RoundState.Shop,
+            RoundState.Shop => RoundState.Round1,
+            _ => currentState
+        };
+    }
+
+
 
 }

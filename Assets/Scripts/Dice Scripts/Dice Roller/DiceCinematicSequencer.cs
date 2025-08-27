@@ -146,6 +146,10 @@ public class DiceCinematicSequencer : MonoBehaviour
 
         playing = false;
         PlayerStateMachine.Instance?.SetActive();
+
+        // advance RoundState: Round1 -> Round2 -> Round3 -> Shop -> Round1
+        var sm = RoundStateMachine.Instance;
+        if (sm != null) sm.ChangeState(sm.GetNextState());
     }
 
     IEnumerator MoveCam(Vector3 fromPos, Quaternion fromRot, float fromFOV,
