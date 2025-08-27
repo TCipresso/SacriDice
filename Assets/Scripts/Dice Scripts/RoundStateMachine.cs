@@ -63,6 +63,7 @@ public class RoundStateMachine : MonoBehaviour
     public void ChangeState(RoundState newState)
     {
         currentState = newState;
+        PrepRoundUIFor(newState);   // <-- reset shownOnce + set both UIs inactive for that round
     }
 
     public void ResetAllFlags()
@@ -119,6 +120,16 @@ public class RoundStateMachine : MonoBehaviour
         };
     }
 
+    void PrepRoundUIFor(RoundState s)
+    {
+        switch (s)
+        {
+            case RoundState.Round1: round1State?.ResetRoundUI(); break;
+            case RoundState.Round2: round2State?.ResetRoundUI(); break;
+            case RoundState.Round3: round3State?.ResetRoundUI(); break;
+                // Shop has its own UI flow
+        }
+    }
 
 
 }

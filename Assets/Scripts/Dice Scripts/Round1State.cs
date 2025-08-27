@@ -3,8 +3,8 @@ using UnityEngine;
 public class Round1State : MonoBehaviour
 {
     [Header("Round 1 UI")]
-    public GameObject handPH;          
-    public GameObject rollUI;          
+    public GameObject handPH;
+    public GameObject rollUI;
 
     bool shownOnce;
 
@@ -32,5 +32,12 @@ public class Round1State : MonoBehaviour
         if (handPH) handPH.SetActive(false);
         if (rollUI) rollUI.SetActive(true);
         //RoundStateMachine.Instance.rollUICanvasGroup.alpha = 1f;
+    }
+
+    public void ResetRoundUI()
+    {
+        shownOnce = false;
+        if (handPH) handPH.SetActive(false);
+        if (rollUI) rollUI.SetActive(false);
     }
 }

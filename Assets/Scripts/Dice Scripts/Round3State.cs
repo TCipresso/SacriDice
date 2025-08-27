@@ -33,4 +33,11 @@ public class Round3State : MonoBehaviour
         if (rollUI) rollUI.SetActive(true);
         //RoundStateMachine.Instance.rollUICanvasGroup.alpha = 1f;
     }
+
+    public void ResetRoundUI()
+    {
+        shownOnce = false;
+        if (handPH) handPH.SetActive(false);
+        if (rollUI) rollUI.SetActive(false);
+    }
 }
