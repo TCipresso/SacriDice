@@ -23,5 +23,5 @@ public class Round3State : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         RoundStateMachine.Instance.ChangeState(RoundStateMachine.RoundState.Shop);
-    }
+    } 
 }

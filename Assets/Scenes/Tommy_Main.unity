@@ -299,7 +299,6 @@ MonoBehaviour:
     m_Bits: 4294967295
   followSpeed: 25
   maxPickDistance: 500
-  forceCursor: 1
   planeNormal: {x: 0, y: 5, z: 0}
   dragHeight: 1
   centerOnPickup: 1
@@ -14928,9 +14927,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
-        m_MethodName: CloseShop
+      - m_Target: {fileID: 1173410907}
+        m_TargetAssemblyTypeName: RoundStateMachine, Assembly-CSharp
+        m_MethodName: ChangeStateStore
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -31451,6 +31450,51 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.02935786, z: 1}
   m_Center: {x: 0, y: -0.4853192, z: 0}
+--- !u!1 &1153512881
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1153512882}
+  - component: {fileID: 1153512883}
+  m_Layer: 0
+  m_Name: SacrificeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1153512882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153512881}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1583091336}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1153512883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153512881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b23ce79f83a1aa4a99338847fce24a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  testDiceCount: 2
 --- !u!1 &1162992973
 GameObject:
   m_ObjectHideFlags: 0
@@ -31645,6 +31689,115 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1164494193}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1173410901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1173410902}
+  - component: {fileID: 1173410907}
+  - component: {fileID: 1173410906}
+  - component: {fileID: 1173410905}
+  - component: {fileID: 1173410904}
+  - component: {fileID: 1173410903}
+  m_Layer: 0
+  m_Name: RoundStateMachine
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1173410902
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173410901}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1583091336}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1173410903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173410901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b11a3306c7d73324ea9048dbb121da6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 3
+--- !u!114 &1173410904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173410901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab20e64e0ec88a84ba224891de1b0218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 2
+--- !u!114 &1173410905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173410901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6987387482504cb49924f399df2f47bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 2
+--- !u!114 &1173410906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173410901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5283b07cf7540d4e9516089c81d85a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 2
+--- !u!114 &1173410907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173410901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ed6441ff87a28c4f96d4166feba2c1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: 0
+  round1State: {fileID: 1173410906}
+  round2State: {fileID: 1173410905}
+  round3State: {fileID: 1173410904}
+  shopState: {fileID: 1173410903}
+  round1Flag: 0
+  round2Flag: 0
+  round3Flag: 0
+  shopFlag: 0
 --- !u!1 &1207231277
 GameObject:
   m_ObjectHideFlags: 0
@@ -44219,11 +44372,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad7bb7aee617f6a439140b65201451c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dice:
-  - {fileID: 1326015795729701355, guid: de41e61af4cef504091fb470c96da986, type: 3}
-  - {fileID: 1326015795729701355, guid: de41e61af4cef504091fb470c96da986, type: 3}
-  - {fileID: 1326015795729701355, guid: de41e61af4cef504091fb470c96da986, type: 3}
   uiImagePrefab: {fileID: 2327415029496081339, guid: 48a11c62b60709e4b8d68fdd28e4a348, type: 3}
+  GenDice: {fileID: 1326015795729701355, guid: de41e61af4cef504091fb470c96da986, type: 3}
+  CurrGenDiceList: []
+  BoughtDiceList:
+  - {fileID: 1326015795729701355, guid: de41e61af4cef504091fb470c96da986, type: 3}
+  CurrStash: []
+  dice: []
 --- !u!4 &1583091336
 Transform:
   m_ObjectHideFlags: 0
@@ -44240,6 +44395,8 @@ Transform:
   - {fileID: 750535353}
   - {fileID: 2029583788}
   - {fileID: 2123714749}
+  - {fileID: 1173410902}
+  - {fileID: 1153512882}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1583091337

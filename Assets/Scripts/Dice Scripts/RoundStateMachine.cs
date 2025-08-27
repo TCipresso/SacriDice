@@ -94,7 +94,7 @@ public class RoundStateMachine : MonoBehaviour
 
     public void ChangeStateStore()
     {
-        ChangeState(RoundState.Shop);
+        ChangeState(RoundState.Round1);
     }
 
 }
