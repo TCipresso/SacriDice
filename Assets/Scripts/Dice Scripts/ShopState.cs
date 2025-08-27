@@ -1,29 +1,30 @@
 using UnityEngine;
-using System.Collections;
 
 public class ShopState : MonoBehaviour
 {
-    [SerializeField] private float duration = 3f;
+    [Header("Shop UI Root")]
+    public GameObject ShopBase;
 
     public void Run()
     {
         var sm = RoundStateMachine.Instance;
-        if (sm == null) return;
+        if (!sm) return;
 
         if (sm.GetFlag(RoundStateMachine.RoundState.Shop)) return;
 
         sm.ResetAllFlags();
         sm.SetFlag(RoundStateMachine.RoundState.Shop, true);
+
         Debug.Log("Shop");
 
-        // If you want the shop UI to appear here, it should already happen via your ShopManager enable.
-        //StartCoroutine(RunRoutine());
+        if (ShopBase) ShopBase.SetActive(true);
+
+        AnteManager.Instance?.HandleEnterShop();
     }
 
-    private IEnumerator RunRoutine()
+    public void ResetShop()
     {
-        yield return new WaitForSeconds(duration);
-        RoundStateMachine.Instance.ChangeState(RoundStateMachine.RoundState.Round1);
-        //RoundStateMachine.Instance.rollUICanvasGroup.alpha = 1f;
+        if (ShopBase) ShopBase.SetActive(false);
+        RoundStateMachine.Instance?.ChangeStateStore();
     }
 }

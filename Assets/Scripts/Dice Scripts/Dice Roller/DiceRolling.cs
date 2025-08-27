@@ -16,6 +16,8 @@ public class DiceRolling : MonoBehaviour
     public float spinSpeedDegPerSec = 420f;
     public bool randomizeSpinAxisEachPickup = true;
 
+    public static List<GameObject> SpawnedDice = new List<GameObject>();
+
     Camera cam;
     Vector3 planePoint;
 
@@ -186,6 +188,7 @@ public class DiceRolling : MonoBehaviour
         {
             if (!prefab) continue;
             var inst = Instantiate(prefab, basePos + Random.insideUnitSphere * spreadRadius, Random.rotation);
+            SpawnedDice.Add(inst);
             var rb = inst.GetComponent<Rigidbody>();
             if (rb)
             {
