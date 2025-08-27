@@ -6,19 +6,20 @@ public class AnteManager : MonoBehaviour
     public static AnteManager Instance { get; private set; }
 
     [Header("Ante Rules")]
-    public int targetAnte = 32;  // the goal to meet/exceed
-    public int maxRounds = 3;   // rounds per ante
+    public int targetAnte = 32;    // goal to meet/exceed for the current loop
+    public int maxRounds = 3;      // rounds per loop
+    public int currentLoop = 0;    // completed loops so far (used for scaling)
 
     [Header("Scaling")]
-    public int anteStep = 8;     // how much to increase target each time you enter the Shop
+    public int anteStep = 8;       // base step; scaled exponentially each loop
 
     [Header("UI")]
-    public TextMeshProUGUI anteTMP;     // assign in inspector
+    public TextMeshProUGUI anteTMP;
     public string antePrefix = "Ante: ";
 
     [Header("Runtime")]
-    public int currentRoundIndex = 0;  // 0-based count of completed rounds in this ante
-    public int cumulativeTotal = 0;  // carries across rounds within the current ante
+    public int currentRoundIndex = 0; // 0-based rounds completed in this loop
+    public int cumulativeTotal = 0;   // carries across rounds within this loop
     public bool earlyWin = false;
 
     void Awake()
@@ -28,9 +29,7 @@ public class AnteManager : MonoBehaviour
         UpdateAnteUI();
     }
 
-    /// <summary>
-    /// Call once per round after the cinematic finishes (pass this round's roll total).
-    /// </summary>
+    /// Call once per round after cinematic finishes, passing that round's total.
     public void ApplyRoundResult(int roundTotal)
     {
         currentRoundIndex++;
@@ -44,7 +43,7 @@ public class AnteManager : MonoBehaviour
             earlyWin = true;
             Debug.Log("[ANTE] EARLY WIN: target reached before final round.");
 
-            // Clear out per-round dice since we skip remaining rounds
+            // Clear per-round dice since remaining rounds are skipped
             if (DiceStash.Instance)
             {
                 DiceStash.Instance.ResetGenDiceList();
@@ -52,34 +51,37 @@ public class AnteManager : MonoBehaviour
             }
         }
 
-        // After the final round
+        // After final round, just report result; Shop will handle reset/scale.
         if (currentRoundIndex >= maxRounds)
         {
             if (cumulativeTotal >= targetAnte)
                 Debug.Log("[ANTE] WIN after final round.");
             else
                 Debug.Log("[ANTE] LOSS: target not met after final round.");
-
-            // Do NOT reset here; Shop handles reset before next loop
         }
     }
 
-
-    /// <summary>
-    /// Called when entering the Shop after a 3-round loop (or early win).
-    /// Increases the ante for the next loop and resets counters.
-    /// </summary>
+    /// Call when entering Shop (after a loop or early win):
+    /// scales difficulty for the NEXT loop and resets counters.
     public void HandleEnterShop()
     {
-        // Bump difficulty for NEXT loop
-        targetAnte += anteStep;
-        UpdateAnteUI();
+        // Exponential + random growth per loop
+        int minIncrease = Mathf.RoundToInt(anteStep * Mathf.Pow(1.15f, currentLoop));
+        int maxIncrease = Mathf.RoundToInt(anteStep * Mathf.Pow(1.30f, currentLoop));
+        if (maxIncrease < minIncrease) maxIncrease = minIncrease;
 
-        // Prepare a fresh run for the next three rounds
+        int increase = Random.Range(minIncrease, maxIncrease + 1);
+
+        targetAnte += increase;
+        currentLoop++;
+
+        Debug.Log($"[ANTE] New Target = {targetAnte}  ( +{increase} )");
+
+        UpdateAnteUI();
         ResetAnteRun();
     }
 
-    /// <summary> Reset for a new ante loop (Round1 will start from zero).</summary>
+    /// Reset for a new loop (Round1 will start from zero).
     public void ResetAnteRun()
     {
         currentRoundIndex = 0;
@@ -90,6 +92,6 @@ public class AnteManager : MonoBehaviour
 
     void UpdateAnteUI()
     {
-        if (anteTMP) anteTMP.text = antePrefix + targetAnte.ToString();
+        if (anteTMP) anteTMP.text = $"{antePrefix}{targetAnte}";
     }
 }
