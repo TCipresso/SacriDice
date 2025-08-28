@@ -216,20 +216,19 @@ public class ShopManager : MonoBehaviour
         return picks;
     }
 
-    // -------- NEW: Close Shop Button --------
     public void CloseShop()
     {
+        Debug.Log("[ShopManager] CloseShop() clicked");
         ClearDisplay();
 
-        // Hide the shop UI canvas if assigned
-        if (shopUIRoot != null)
-            shopUIRoot.SetActive(false);
+        if (shopUIRoot != null) shopUIRoot.SetActive(false);
 
-        // Also disable this ShopManager
+        // Kick the round machine back to Round1
+        if (RoundStateMachine.Instance != null)
+            RoundStateMachine.Instance.ChangeState(RoundStateMachine.RoundState.Round1);
+
+        // Finally disable the shop object
         gameObject.SetActive(false);
-
-        // If you want to hide cursor when shop closes, uncomment:
-        // Cursor.lockState = CursorLockMode.Locked;
-        // Cursor.visible = false;
     }
+
 }

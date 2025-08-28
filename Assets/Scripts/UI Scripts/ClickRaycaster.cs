@@ -1,48 +1,60 @@
-// File: ClickRaycaster.cs
 using UnityEngine;
+using UnityEngine.EventSystems;  // <-- needed for IsPointerOverGameObject
 
 public class ClickRaycaster : MonoBehaviour
 {
     [SerializeField] private Camera cam;
     [SerializeField] private float maxDistance = 100f;
     [SerializeField] private LayerMask layerMask = ~0; // Everything by default
-    [SerializeField] private bool debugLogs = true;
+    [SerializeField] private bool ignoreWhenPointerOverUI = true;
+    [SerializeField] private bool debugLogs = false;
 
     void Awake()
     {
         if (cam == null) cam = Camera.main;
-        if (debugLogs && cam == null)
-            Debug.LogWarning("[ClickRaycaster] No camera set and no Camera.main found. Assign a Camera.");
     }
 
     void Update()
     {
+        // Mouse click
         if (Input.GetMouseButtonDown(0))
         {
-            if (cam == null) return;
+            if (ignoreWhenPointerOverUI && IsPointerOverUI()) return;
+            DoPhysicsClick(Input.mousePosition);
+        }
 
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            Debug.DrawRay(ray.origin, ray.direction * maxDistance, Color.cyan, 1.0f);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore))
+        // Touch support (began)
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            var touch = Input.GetTouch(i);
+            if (touch.phase == TouchPhase.Began)
             {
-                if (debugLogs)
-                    Debug.Log("[ClickRaycaster] Hit: " + hit.collider.name + " on layer " + LayerMask.LayerToName(hit.collider.gameObject.layer));
+                if (ignoreWhenPointerOverUI && IsPointerOverUI(touch.fingerId)) continue;
+                DoPhysicsClick(touch.position);
+            }
+        }
+    }
 
-                var clickable = hit.collider.GetComponentInParent<IClickable>();
-                if (clickable != null)
-                {
-                    clickable.OnClick();
-                }
-                else if (debugLogs)
-                {
-                    Debug.LogWarning("[ClickRaycaster] No IClickable found on parent of " + hit.collider.name);
-                }
-            }
-            else if (debugLogs)
-            {
-                Debug.Log("[ClickRaycaster] Raycast hit nothing.");
-            }
+    bool IsPointerOverUI(int pointerId = -1)
+    {
+        // -1 is mouse, fingerId for touch
+        if (EventSystem.current == null) return false;
+        return EventSystem.current.IsPointerOverGameObject(pointerId);
+    }
+
+    void DoPhysicsClick(Vector3 screenPos)
+    {
+        if (cam == null) return;
+
+        Ray ray = cam.ScreenPointToRay(screenPos);
+        if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore))
+        {
+            if (debugLogs) Debug.Log("[ClickRaycaster] Hit: " + hit.collider.name);
+            hit.collider.GetComponentInParent<IClickable>()?.OnClick();
+        }
+        else
+        {
+            if (debugLogs) Debug.Log("[ClickRaycaster] Raycast hit nothing.");
         }
     }
 }
