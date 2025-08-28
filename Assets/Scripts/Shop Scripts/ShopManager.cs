@@ -68,23 +68,16 @@ public class ShopManager : MonoBehaviour
         item.OnPurchased();
         Notify("Bought " + item.ItemName + " for $" + item.Price + ".");
 
-        // --- Add the attached RealDice prefab to the current stash ---
-        GameObject realDicePrefab = null;
-
-        // If this is a Dice item, get its RealDice prefab
-        if (item is Dice diceItem && diceItem.RealDice != null)
+        // --- Add the attached RealDice prefab to the Purchased list ---
+        if (item is Dice diceItem && diceItem.RealDice != null && DiceStash.Instance != null)
         {
-            realDicePrefab = diceItem.RealDice;
-        }
-
-        if (realDicePrefab != null && DiceStash.Instance != null)
-        {
-            DiceStash.Instance.dice.Add(realDicePrefab);
-            // We don't rebuild UI or do anything else here, per your instructions
+            DiceStash.Instance.AddBoughtDie(diceItem.RealDice);
+            // no UI rebuild here (as requested)
         }
 
         return true;
     }
+
 
 
     private void Notify(string msg)

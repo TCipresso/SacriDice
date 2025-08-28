@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 public class HoldToSpawnDice : MonoBehaviour, IPointerDownHandler
 {
-    public CanvasGroup uiGroup;
+    public GameObject RollUI;      // assign your Roll UI object here
     public DiceRolling diceRolling;
 
     bool hasSpawned = false;
@@ -13,16 +13,17 @@ public class HoldToSpawnDice : MonoBehaviour, IPointerDownHandler
         if (!diceRolling) diceRolling = Camera.main.GetComponent<DiceRolling>();
     }
 
+    // Reset per round when this UI gets enabled again
+    void OnEnable()
+    {
+        hasSpawned = false;
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         if (hasSpawned) return;
 
-        if (uiGroup)
-        {
-            uiGroup.alpha = 0f;
-            uiGroup.interactable = false;
-            uiGroup.blocksRaycasts = false;
-        }
+        if (RollUI) RollUI.SetActive(false);
 
         if (diceRolling)
             diceRolling.SpawnFromStashAndBeginHold();

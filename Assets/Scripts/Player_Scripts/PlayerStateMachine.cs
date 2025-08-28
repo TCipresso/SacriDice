@@ -45,6 +45,9 @@ public class PlayerStateMachine : MonoBehaviour
         }
     }
 
+  
+
+
     // Optional quick methods
     public void SetActive() => SetState(State.Active);
     public void SetInactive() => SetState(State.InActive);

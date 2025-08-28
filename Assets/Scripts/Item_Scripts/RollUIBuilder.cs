@@ -6,9 +6,12 @@ public class RollUIBuilder : MonoBehaviour
 
     void OnEnable()
     {
-        if (DiceStash.Instance != null && uiParent != null)
-        {
-            DiceStash.Instance.BuildUI(uiParent);
-        }
+        if (DiceStash.Instance == null || uiParent == null) return;
+
+        // Merge BoughtDiceList + CurrGenDiceList into CurrStash for this round
+        DiceStash.Instance.RebuildCurrStash();
+
+        // Now build the UI from CurrStash
+        DiceStash.Instance.BuildUI(uiParent);
     }
 }

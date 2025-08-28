@@ -16,6 +16,8 @@ public class DiceRolling : MonoBehaviour
     public float spinSpeedDegPerSec = 420f;
     public bool randomizeSpinAxisEachPickup = true;
 
+    public static List<GameObject> SpawnedDice = new List<GameObject>();
+
     Camera cam;
     Vector3 planePoint;
 
@@ -171,6 +173,9 @@ public class DiceRolling : MonoBehaviour
     {
         if (DiceStash.Instance == null) return;
 
+        // Make sure CurrStash = CurrGenDiceList + BoughtDiceList for this round
+        DiceStash.Instance.RebuildCurrStash();
+
         var ray = cam.ScreenPointToRay(Input.mousePosition);
         Vector3 basePos;
         if (Physics.Raycast(ray, out var hit, 500f, pickMask, QueryTriggerInteraction.Ignore))
@@ -179,10 +184,11 @@ public class DiceRolling : MonoBehaviour
             basePos = cam.transform.position + cam.transform.forward * 2f;
 
         var spawned = new List<Rigidbody>();
-        foreach (var prefab in DiceStash.Instance.dice)
+        foreach (var prefab in DiceStash.Instance.CurrStash)
         {
             if (!prefab) continue;
             var inst = Instantiate(prefab, basePos + Random.insideUnitSphere * spreadRadius, Random.rotation);
+            SpawnedDice.Add(inst);
             var rb = inst.GetComponent<Rigidbody>();
             if (rb)
             {

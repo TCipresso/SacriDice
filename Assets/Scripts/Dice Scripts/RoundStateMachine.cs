@@ -18,6 +18,7 @@ public class RoundStateMachine : MonoBehaviour
     public Round2State round2State;
     public Round3State round3State;
     public ShopState shopState;
+    //public CanvasGroup rollUICanvasGroup;
 
     [Header("State Flags")]
     public bool round1Flag;
@@ -62,6 +63,7 @@ public class RoundStateMachine : MonoBehaviour
     public void ChangeState(RoundState newState)
     {
         currentState = newState;
+        PrepRoundUIFor(newState);   // <-- reset shownOnce + set both UIs inactive for that round
     }
 
     public void ResetAllFlags()
@@ -94,7 +96,40 @@ public class RoundStateMachine : MonoBehaviour
 
     public void ChangeStateStore()
     {
-        ChangeState(RoundState.Shop);
+        ChangeState(RoundState.Round1);
     }
+
+
+
+    public RoundState GetNextState()
+    {
+        // Clear dice lists before moving to the next state
+        if (DiceStash.Instance != null)
+        {
+            DiceStash.Instance.ResetGenDiceList();
+            DiceStash.Instance.ResetCurrStash();
+        }
+
+        return currentState switch
+        {
+            RoundState.Round1 => RoundState.Round2,
+            RoundState.Round2 => RoundState.Round3,
+            RoundState.Round3 => RoundState.Shop,
+            RoundState.Shop => RoundState.Round1,
+            _ => currentState
+        };
+    }
+
+    void PrepRoundUIFor(RoundState s)
+    {
+        switch (s)
+        {
+            case RoundState.Round1: round1State?.ResetRoundUI(); break;
+            case RoundState.Round2: round2State?.ResetRoundUI(); break;
+            case RoundState.Round3: round3State?.ResetRoundUI(); break;
+                // Shop has its own UI flow
+        }
+    }
+
 
 }
