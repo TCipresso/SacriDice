@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Round2State : MonoBehaviour
 {
-    [Header("Round 2 UI")]
     public GameObject handPH;
     public GameObject rollUI;
 
@@ -15,7 +14,6 @@ public class Round2State : MonoBehaviour
 
         sm.ResetAllFlags();
         sm.SetFlag(RoundStateMachine.RoundState.Round2, true);
-        Debug.Log("Round 2");
 
         if (!shownOnce)
         {
@@ -25,13 +23,10 @@ public class Round2State : MonoBehaviour
         }
     }
 
-    // Hook this to the Round 2 Hand button OnClick
     public void ConfirmHandAndShowRollUI()
     {
-        SacrificeManager.Instance.SimulateSacrifice();
         if (handPH) handPH.SetActive(false);
         if (rollUI) rollUI.SetActive(true);
-        //RoundStateMachine.Instance.rollUICanvasGroup.alpha = 1f;
     }
 
     public void ResetRoundUI()
