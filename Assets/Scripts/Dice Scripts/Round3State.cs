@@ -4,6 +4,7 @@ public class Round3State : MonoBehaviour
 {
     public GameObject handPH;
     public GameObject rollUI;
+    public GameObject commitButton;
 
     bool shownOnce;
 
@@ -18,7 +19,15 @@ public class Round3State : MonoBehaviour
         if (!shownOnce)
         {
             if (rollUI) rollUI.SetActive(false);
+
+            if (AnteManager.Instance && AnteManager.Instance.lastLoopWin)
+            {
+                SacrificeSystem.Instance.ResolveCollateralWin();
+                AnteManager.Instance.lastLoopWin = false;
+            }
+
             if (handPH) handPH.SetActive(true);
+            if (commitButton) commitButton.SetActive(true);
             shownOnce = true;
         }
     }
@@ -26,6 +35,7 @@ public class Round3State : MonoBehaviour
     public void ConfirmHandAndShowRollUI()
     {
         if (handPH) handPH.SetActive(false);
+        if (commitButton) commitButton.SetActive(false);
         if (rollUI) rollUI.SetActive(true);
     }
 
@@ -33,6 +43,7 @@ public class Round3State : MonoBehaviour
     {
         shownOnce = false;
         if (handPH) handPH.SetActive(false);
+        if (commitButton) commitButton.SetActive(false);
         if (rollUI) rollUI.SetActive(false);
     }
 }

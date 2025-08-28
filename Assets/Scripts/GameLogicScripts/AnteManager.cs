@@ -76,9 +76,13 @@ public class AnteManager : MonoBehaviour
         loopResolved = false;
     }
 
+    // AnteManager.cs
+    public bool lastLoopWin;
+
     void ResolveWinLoop()
     {
         loopResolved = true;
+        lastLoopWin = true;
         if (SacrificeSystem.Instance != null) SacrificeSystem.Instance.ResolveCollateralWin();
         if (DiceStash.Instance != null)
         {
@@ -92,6 +96,7 @@ public class AnteManager : MonoBehaviour
     void ResolveLossLoop()
     {
         loopResolved = true;
+        lastLoopWin = false;
         bool gameOver = false;
         if (SacrificeSystem.Instance != null) gameOver = SacrificeSystem.Instance.ResolveCollateralLose();
         if (DiceStash.Instance != null)
@@ -102,6 +107,7 @@ public class AnteManager : MonoBehaviour
         OnLoopResolved?.Invoke(false);
         Debug.Log(gameOver ? "[ANTE] LOSS -> GAME OVER" : "[ANTE] LOSS");
     }
+
 
     void UpdateAnteUI()
     {

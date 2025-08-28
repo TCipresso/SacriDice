@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Dice
   - BuyableItem
+  - Hand
   layers:
   - Default
   - TransparentFX
