@@ -15265,6 +15265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetAnte: 15
   maxRounds: 3
+  currentLoop: 0
   anteStep: 8
   anteTMP: {fileID: 1975409214}
   antePrefix: 'Ante: '
@@ -58193,6 +58194,7 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1404736236}
   - {fileID: 1583091336}
   - {fileID: 1877536984}
   - {fileID: 271948279}
@@ -58201,7 +58203,6 @@ SceneRoots:
   - {fileID: 1162992976}
   - {fileID: 926455079}
   - {fileID: 1463150951}
-  - {fileID: 1404736236}
   - {fileID: 1207231283}
   - {fileID: 541402298}
   - {fileID: 192764526}
