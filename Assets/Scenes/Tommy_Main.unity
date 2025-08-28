@@ -15973,7 +15973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7525405f4a80d90458d7f36f8cc43580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetAnte: 15
+  targetAnte: 500
   maxRounds: 3
   currentLoop: 0
   anteStep: 8
@@ -46576,6 +46576,7 @@ MonoBehaviour:
   commitButton: {fileID: 133307583}
   cancelButton: {fileID: 0}
   bonusTMP: {fileID: 0}
+  hideStaked: 1
 --- !u!1 &1583091334
 GameObject:
   m_ObjectHideFlags: 0

@@ -114,19 +114,49 @@ public class SacrificeUI : MonoBehaviour
         SetHand(rightHand, s.right.handAvailable, s.right.handSelected, s.right.handStaked);
 
         if (bonusTMP) bonusTMP.text = "Bonus Dice: " + s.GetProjectedBonus().ToString();
-        if (commitButton) commitButton.interactable = !s.roundLocked && s.IsAnySelectionActive();
-        if (cancelButton) cancelButton.interactable = !s.roundLocked && s.IsAnySelectionActive();
+        void RefreshAll()
+        {
+            if (!root.activeSelf) return;
+            var s = SacrificeSystem.Instance;
+
+            SetFinger(leftThumb, s.left.thumbAvailable, s.left.thumbSelected, s.left.thumbStaked, s.left.handSelected, s.left.handStaked);
+            SetFinger(leftIndex, s.left.indexAvailable, s.left.indexSelected, s.left.indexStaked, s.left.handSelected, s.left.handStaked);
+            SetFinger(leftMiddle, s.left.middleAvailable, s.left.middleSelected, s.left.middleStaked, s.left.handSelected, s.left.handStaked);
+            SetFinger(leftRing, s.left.ringAvailable, s.left.ringSelected, s.left.ringStaked, s.left.handSelected, s.left.handStaked);
+            SetFinger(leftPinky, s.left.pinkyAvailable, s.left.pinkySelected, s.left.pinkyStaked, s.left.handSelected, s.left.handStaked);
+            SetHand(leftHand, s.left.handAvailable, s.left.handSelected, s.left.handStaked);
+
+            SetFinger(rightThumb, s.right.thumbAvailable, s.right.thumbSelected, s.right.thumbStaked, s.right.handSelected, s.right.handStaked);
+            SetFinger(rightIndex, s.right.indexAvailable, s.right.indexSelected, s.right.indexStaked, s.right.handSelected, s.right.handStaked);
+            SetFinger(rightMiddle, s.right.middleAvailable, s.right.middleSelected, s.right.middleStaked, s.right.handSelected, s.right.handStaked);
+            SetFinger(rightRing, s.right.ringAvailable, s.right.ringSelected, s.right.ringStaked, s.right.handSelected, s.right.handStaked);
+            SetFinger(rightPinky, s.right.pinkyAvailable, s.right.pinkySelected, s.right.pinkyStaked, s.right.handSelected, s.right.handStaked);
+            SetHand(rightHand, s.right.handAvailable, s.right.handSelected, s.right.handStaked);
+
+            if (bonusTMP) bonusTMP.text = "Bonus Dice: " + s.GetProjectedBonus().ToString();
+
+            if (commitButton) commitButton.interactable = true;
+            if (cancelButton) cancelButton.interactable = true;
+        }
+
     }
+
+    // SacrificeUI
+    public bool hideStaked = true;
 
     void SetFinger(Button b, bool available, bool selected, bool staked, bool handSelected, bool handStaked)
     {
         if (!b) return;
-        b.interactable = available && !staked && !handSelected && !handStaked && !SacrificeSystem.Instance.roundLocked;
+        if (hideStaked) b.gameObject.SetActive(available && !staked);
+        b.interactable = available && !staked;
     }
 
     void SetHand(Button b, bool available, bool selected, bool staked)
     {
         if (!b) return;
-        b.interactable = available && !staked && !SacrificeSystem.Instance.roundLocked;
+        if (hideStaked) b.gameObject.SetActive(available && !staked);
+        b.interactable = available && !staked;
     }
+
+
 }
