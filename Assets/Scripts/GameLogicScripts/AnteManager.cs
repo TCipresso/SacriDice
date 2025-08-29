@@ -83,30 +83,47 @@ public class AnteManager : MonoBehaviour
     {
         loopResolved = true;
         lastLoopWin = true;
-        if (SacrificeSystem.Instance != null) SacrificeSystem.Instance.ResolveCollateralWin();
+
+        // NEW: grow everything back
+        if (SacrificeManager2.Instance != null)
+            SacrificeManager2.Instance.RestoreAllCommittedToHome();
+
+        // Clear per-round dice UI/stash as you already had
         if (DiceStash.Instance != null)
         {
             DiceStash.Instance.ResetGenDiceList();
             DiceStash.Instance.ResetCurrStash();
         }
+
         OnLoopResolved?.Invoke(true);
         Debug.Log("[ANTE] WIN");
     }
+
 
     void ResolveLossLoop()
     {
         loopResolved = true;
         lastLoopWin = false;
-        bool gameOver = false;
-        if (SacrificeSystem.Instance != null) gameOver = SacrificeSystem.Instance.ResolveCollateralLose();
+
+        // Move everything currently committed into the permanent-loss bank and disable them.
+        if (SacrificeManager2.Instance != null)
+            SacrificeManager2.Instance.BankCommittedToPermanentLoss();
+
+        // (Optional) If you still need game-over logic from your older system, keep this:
+        // bool gameOver = false;
+        // if (SacrificeSystem.Instance != null) gameOver = SacrificeSystem.Instance.ResolveCollateralLose();
+
+        // Clear per-round dice/stash UI
         if (DiceStash.Instance != null)
         {
             DiceStash.Instance.ResetGenDiceList();
             DiceStash.Instance.ResetCurrStash();
         }
+
         OnLoopResolved?.Invoke(false);
-        Debug.Log(gameOver ? "[ANTE] LOSS -> GAME OVER" : "[ANTE] LOSS");
+        Debug.Log("[ANTE] LOSS");
     }
+
 
 
     void UpdateAnteUI()

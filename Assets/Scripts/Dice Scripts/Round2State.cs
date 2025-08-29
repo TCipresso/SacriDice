@@ -19,7 +19,9 @@ public class Round2State : MonoBehaviour
         if (!shownOnce)
         {
             if (rollUI) rollUI.SetActive(false);
-
+            SacrificeManager2.Instance.ResetRoundCommitTotals(); // (your per-round dice reset)
+            SacrificeManager2.Instance.RebuildLists();
+            SacrificeManager2.Instance.EnforceCommittedDisabled();
             if (AnteManager.Instance && AnteManager.Instance.lastLoopWin)
             {
                 SacrificeSystem.Instance.ResolveCollateralWin();

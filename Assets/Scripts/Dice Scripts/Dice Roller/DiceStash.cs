@@ -10,14 +10,14 @@ public class DiceStash : MonoBehaviour
     public GameObject uiImagePrefab;
 
     [Header("Generated (per round)")]
-    public GameObject GenDice;                       // prefab for general D6 earned via sacrifice
-    public List<GameObject> CurrGenDiceList = new(); // per-round generated dice
+    public GameObject GenDice;
+    public List<GameObject> CurrGenDiceList = new();
 
     [Header("Purchased (persists across rounds)")]
-    public List<GameObject> BoughtDiceList = new();  // all dice bought in shop
+    public List<GameObject> BoughtDiceList = new();
 
     [Header("Current Stash (this round = Gen + Bought)")]
-    public List<GameObject> CurrStash = new();       // used for UI & spawning this round
+    public List<GameObject> CurrStash = new();
 
     void Awake()
     {
@@ -44,9 +44,6 @@ public class DiceStash : MonoBehaviour
     // ---------- Current Stash Management ----------
     public void ResetCurrStash() => CurrStash.Clear();
 
-    /// <summary>
-    /// Rebuilds CurrStash from CurrGenDiceList + BoughtDiceList (in that order).
-    /// </summary>
     public void RebuildCurrStash()
     {
         CurrStash.Clear();
@@ -55,15 +52,32 @@ public class DiceStash : MonoBehaviour
     }
 
     // ---------- UI ----------
-    /// <summary>
-    /// Builds roll UI from CurrStash (effective dice this round).
-    /// </summary>
     public void BuildUI(Transform parent)
     {
         if (!parent) return;
 
+        int committedTotal = (SacrificeManager2.Instance != null)
+            ? SacrificeManager2.Instance.totalDiceCommitted
+            : 0;
+
+        int have = CurrGenDiceList.Count;
+        int need = committedTotal - have;
+
+        if (need > 0)
+        {
+            AddGenDice(need);
+        }
+        else if (need < 0)
+        {
+            int remove = -need;
+            for (int i = 0; i < remove && CurrGenDiceList.Count > 0; i++)
+                CurrGenDiceList.RemoveAt(CurrGenDiceList.Count - 1);
+        }
+
+        RebuildCurrStash();
+
         for (int i = parent.childCount - 1; i >= 0; i--)
-            Destroy(parent.GetChild(i).gameObject);
+            Object.Destroy(parent.GetChild(i).gameObject);
 
         foreach (var d in CurrStash)
         {
@@ -76,4 +90,5 @@ public class DiceStash : MonoBehaviour
             if (img) img.sprite = db.uiPromptSprite;
         }
     }
+
 }

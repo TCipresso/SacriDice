@@ -274,6 +274,7 @@ GameObject:
   - component: {fileID: 46715471}
   - component: {fileID: 46715470}
   - component: {fileID: 46715473}
+  - component: {fileID: 46715474}
   m_Layer: 5
   m_Name: RPinky
   m_TagString: Untagged
@@ -408,6 +409,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0.7725491, g: 0.61960787, b: 0.4431373, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &46715474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46715468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be3215036b2b2b4f91842f7b6fe4a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDice: 1
+  baseCoins: 5
+  baseHealth: 10
+  addDice: 0
+  mulDice: 1
+  addCoins: 0
+  mulCoins: 1
+  addHealth: 0
+  mulHealth: 1
 --- !u!1 &63107866
 GameObject:
   m_ObjectHideFlags: 0
@@ -3868,6 +3890,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1173410906}
+        m_TargetAssemblyTypeName: Round1State, Assembly-CSharp
+        m_MethodName: ConfirmHandAndShowRollUI
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &133307584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3921,7 +3955,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &136752761
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4515,6 +4549,7 @@ GameObject:
   - component: {fileID: 202505755}
   - component: {fileID: 202505754}
   - component: {fileID: 202505757}
+  - component: {fileID: 202505758}
   m_Layer: 5
   m_Name: RRing
   m_TagString: Untagged
@@ -4649,6 +4684,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0.7725491, g: 0.61960787, b: 0.4431373, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &202505758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 202505752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be3215036b2b2b4f91842f7b6fe4a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDice: 1
+  baseCoins: 5
+  baseHealth: 10
+  addDice: 0
+  mulDice: 1
+  addCoins: 0
+  mulCoins: 1
+  addHealth: 0
+  mulHealth: 1
 --- !u!1 &219947807
 GameObject:
   m_ObjectHideFlags: 0
@@ -5113,6 +5169,7 @@ GameObject:
   - component: {fileID: 261991072}
   - component: {fileID: 261991071}
   - component: {fileID: 261991074}
+  - component: {fileID: 261991075}
   m_Layer: 5
   m_Name: LPalm
   m_TagString: Hand
@@ -5247,6 +5304,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0.7725491, g: 0.61960787, b: 0.4431373, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &261991075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261991069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be3215036b2b2b4f91842f7b6fe4a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDice: 5
+  baseCoins: 5
+  baseHealth: 50
+  addDice: 0
+  mulDice: 1
+  addCoins: 0
+  mulCoins: 1
+  addHealth: 0
+  mulHealth: 1
 --- !u!1 &264127544
 GameObject:
   m_ObjectHideFlags: 0
@@ -16029,7 +16107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7525405f4a80d90458d7f36f8cc43580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetAnte: 500
+  targetAnte: 5
   maxRounds: 3
   currentLoop: 0
   anteStep: 8
@@ -16195,6 +16273,7 @@ GameObject:
   - component: {fileID: 460439616}
   - component: {fileID: 460439615}
   - component: {fileID: 460439618}
+  - component: {fileID: 460439619}
   m_Layer: 5
   m_Name: RMiddle
   m_TagString: Untagged
@@ -16329,6 +16408,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0.7725491, g: 0.61960787, b: 0.4431373, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &460439619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 460439613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be3215036b2b2b4f91842f7b6fe4a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDice: 1
+  baseCoins: 5
+  baseHealth: 10
+  addDice: 0
+  mulDice: 1
+  addCoins: 0
+  mulCoins: 1
+  addHealth: 0
+  mulHealth: 1
 --- !u!1 &469050294
 GameObject:
   m_ObjectHideFlags: 0
@@ -16342,6 +16442,7 @@ GameObject:
   - component: {fileID: 469050297}
   - component: {fileID: 469050296}
   - component: {fileID: 469050299}
+  - component: {fileID: 469050300}
   m_Layer: 5
   m_Name: RPalm
   m_TagString: Hand
@@ -16476,6 +16577,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0.7725491, g: 0.61960787, b: 0.4431373, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &469050300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469050294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be3215036b2b2b4f91842f7b6fe4a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDice: 5
+  baseCoins: 5
+  baseHealth: 50
+  addDice: 0
+  mulDice: 1
+  addCoins: 0
+  mulCoins: 1
+  addHealth: 0
+  mulHealth: 1
 --- !u!1 &480598271
 GameObject:
   m_ObjectHideFlags: 0
@@ -29735,6 +29857,7 @@ GameObject:
   - component: {fileID: 973511215}
   - component: {fileID: 973511214}
   - component: {fileID: 973511217}
+  - component: {fileID: 973511218}
   m_Layer: 5
   m_Name: RThumb
   m_TagString: Untagged
@@ -29869,6 +29992,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0.7725491, g: 0.61960787, b: 0.4431373, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &973511218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 973511212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be3215036b2b2b4f91842f7b6fe4a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDice: 1
+  baseCoins: 5
+  baseHealth: 10
+  addDice: 0
+  mulDice: 1
+  addCoins: 0
+  mulCoins: 1
+  addHealth: 0
+  mulHealth: 1
 --- !u!1 &979258445
 GameObject:
   m_ObjectHideFlags: 0
@@ -33677,6 +33821,13 @@ MonoBehaviour:
   RightHand: []
   SelectedSac: []
   CommittedSac: []
+  PermaSac: []
+  lastDiceValue: 0
+  lastCoinsValue: 0
+  lastHealthValue: 0
+  totalDiceCommitted: 0
+  totalCoinsCommitted: 0
+  totalHealthCommitted: 0
 --- !u!1 &1158302328
 GameObject:
   m_ObjectHideFlags: 0
@@ -33690,6 +33841,7 @@ GameObject:
   - component: {fileID: 1158302331}
   - component: {fileID: 1158302330}
   - component: {fileID: 1158302333}
+  - component: {fileID: 1158302334}
   m_Layer: 5
   m_Name: LPinky
   m_TagString: Untagged
@@ -33824,6 +33976,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0.7725491, g: 0.61960787, b: 0.4431373, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &1158302334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1158302328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be3215036b2b2b4f91842f7b6fe4a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDice: 1
+  baseCoins: 5
+  baseHealth: 10
+  addDice: 0
+  mulDice: 1
+  addCoins: 0
+  mulCoins: 1
+  addHealth: 0
+  mulHealth: 1
 --- !u!1 &1162992973
 GameObject:
   m_ObjectHideFlags: 0
@@ -34146,6 +34319,7 @@ GameObject:
   - component: {fileID: 1183573497}
   - component: {fileID: 1183573496}
   - component: {fileID: 1183573499}
+  - component: {fileID: 1183573500}
   m_Layer: 5
   m_Name: RPointer
   m_TagString: Untagged
@@ -34280,6 +34454,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0.7725491, g: 0.61960787, b: 0.4431373, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &1183573500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183573494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be3215036b2b2b4f91842f7b6fe4a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDice: 1
+  baseCoins: 5
+  baseHealth: 10
+  addDice: 0
+  mulDice: 1
+  addCoins: 0
+  mulCoins: 1
+  addHealth: 0
+  mulHealth: 1
 --- !u!1 &1207231277
 GameObject:
   m_ObjectHideFlags: 0
@@ -34556,6 +34751,7 @@ GameObject:
   - component: {fileID: 1231834988}
   - component: {fileID: 1231834987}
   - component: {fileID: 1231834990}
+  - component: {fileID: 1231834991}
   m_Layer: 5
   m_Name: LThumb
   m_TagString: Untagged
@@ -34690,6 +34886,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0.7725491, g: 0.61960787, b: 0.4431373, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &1231834991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231834985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be3215036b2b2b4f91842f7b6fe4a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDice: 1
+  baseCoins: 5
+  baseHealth: 10
+  addDice: 0
+  mulDice: 1
+  addCoins: 0
+  mulCoins: 1
+  addHealth: 0
+  mulHealth: 1
 --- !u!1 &1240269811
 GameObject:
   m_ObjectHideFlags: 0
@@ -35199,9 +35416,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1574033265}
-        m_TargetAssemblyTypeName: SacrificeUI, Assembly-CSharp
-        m_MethodName: Click_Commit
+      - m_Target: {fileID: 1153512885}
+        m_TargetAssemblyTypeName: SacrificeManager2, Assembly-CSharp
+        m_MethodName: CommitSelected
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -47203,7 +47420,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1574033263}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a9ac636f0ff92b44991e6b4ca9f59fa, type: 3}
   m_Name: 
@@ -47717,9 +47934,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1574033265}
-        m_TargetAssemblyTypeName: SacrificeUI, Assembly-CSharp
-        m_MethodName: Click_Commit
+      - m_Target: {fileID: 1153512885}
+        m_TargetAssemblyTypeName: SacrificeManager2, Assembly-CSharp
+        m_MethodName: CommitSelected
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -48600,6 +48817,7 @@ GameObject:
   - component: {fileID: 1857443779}
   - component: {fileID: 1857443778}
   - component: {fileID: 1857443781}
+  - component: {fileID: 1857443782}
   m_Layer: 5
   m_Name: LRing
   m_TagString: Untagged
@@ -48734,6 +48952,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0.7725491, g: 0.61960787, b: 0.4431373, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &1857443782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1857443776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be3215036b2b2b4f91842f7b6fe4a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDice: 1
+  baseCoins: 5
+  baseHealth: 10
+  addDice: 0
+  mulDice: 1
+  addCoins: 0
+  mulCoins: 1
+  addHealth: 0
+  mulHealth: 1
 --- !u!1 &1872213328
 GameObject:
   m_ObjectHideFlags: 0
@@ -59661,6 +59900,7 @@ GameObject:
   - component: {fileID: 1986913357}
   - component: {fileID: 1986913356}
   - component: {fileID: 1986913359}
+  - component: {fileID: 1986913360}
   m_Layer: 5
   m_Name: LMiddle
   m_TagString: Untagged
@@ -59795,6 +60035,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0.7725491, g: 0.61960787, b: 0.4431373, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &1986913360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986913354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be3215036b2b2b4f91842f7b6fe4a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDice: 1
+  baseCoins: 5
+  baseHealth: 10
+  addDice: 0
+  mulDice: 1
+  addCoins: 0
+  mulCoins: 1
+  addHealth: 0
+  mulHealth: 1
 --- !u!1 &1988282924
 GameObject:
   m_ObjectHideFlags: 0
@@ -60379,6 +60640,7 @@ GameObject:
   - component: {fileID: 2075536740}
   - component: {fileID: 2075536739}
   - component: {fileID: 2075536742}
+  - component: {fileID: 2075536743}
   m_Layer: 5
   m_Name: LPointer
   m_TagString: Untagged
@@ -60513,6 +60775,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalColor: {r: 0.7725491, g: 0.61960787, b: 0.4431373, a: 1}
   selectedColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &2075536743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075536737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be3215036b2b2b4f91842f7b6fe4a24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDice: 1
+  baseCoins: 5
+  baseHealth: 10
+  addDice: 0
+  mulDice: 1
+  addCoins: 0
+  mulCoins: 1
+  addHealth: 0
+  mulHealth: 1
 --- !u!1 &2078245599
 GameObject:
   m_ObjectHideFlags: 0
