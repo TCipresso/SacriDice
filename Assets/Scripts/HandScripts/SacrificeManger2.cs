@@ -11,6 +11,10 @@ public class SacrificeManager2 : MonoBehaviour
     public GameObject leftHandParent;
     public GameObject rightHandParent;
 
+    [Header("Game Over")]
+    public int permaLossLimit = 12;   // 10 fingers + 2 hands = 12
+    public GameObject gameOver;       // assign your Game Over UI here
+
     [Header("Runtime Lists")]
     public List<GameObject> LeftHand = new List<GameObject>();
     public List<GameObject> RightHand = new List<GameObject>();
@@ -137,6 +141,14 @@ public class SacrificeManager2 : MonoBehaviour
             LeftHand.Add(item);
         }
     }
+
+    void CheckGameOver()
+    {
+        if (!gameOver) return;
+        if (PermaSac.Count >= permaLossLimit)
+            gameOver.SetActive(true);
+    }
+
 
     private void RemoveFromAll(GameObject item)
     {
@@ -396,5 +408,6 @@ public class SacrificeManager2 : MonoBehaviour
         // refresh lists/enforcement
         EnforceCommittedDisabled();
         RebuildLists();
+        CheckGameOver();
     }
 }

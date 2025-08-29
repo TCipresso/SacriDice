@@ -40,6 +40,7 @@ public class AnteManager : MonoBehaviour
         currentRoundIndex++;
         cumulativeTotal += Mathf.Max(0, roundTotal);
 
+        // Early WIN (unchanged)
         if (cumulativeTotal >= targetAnte && !earlyWin && currentRoundIndex < maxRounds)
         {
             earlyWin = true;
@@ -47,6 +48,26 @@ public class AnteManager : MonoBehaviour
             return;
         }
 
+        // ---- EARLY LOSS detection ----
+        // If we have NOT met the target, are BEFORE final round,
+        // and there is NO collateral left to bet -> lose immediately.
+        if (cumulativeTotal < targetAnte && currentRoundIndex < maxRounds)
+        {
+            int available = 0;
+            if (SacrificeManager2.Instance != null)
+                available = (SacrificeManager2.Instance.LeftHand.Count + SacrificeManager2.Instance.RightHand.Count);
+
+            if (available <= 0)
+            {
+                Debug.Log("[ANTE] EARLY LOSS: no collateral remaining.");
+                ResolveLossLoop();
+                SacrificeManager2.Instance.gameOver.SetActive(true);
+                return;
+            }
+        }
+        // ---- end EARLY LOSS ----
+
+        // Final round resolution
         if (currentRoundIndex >= maxRounds && !loopResolved)
         {
             if (cumulativeTotal >= targetAnte) ResolveWinLoop();
