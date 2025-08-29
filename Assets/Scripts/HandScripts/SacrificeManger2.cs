@@ -265,6 +265,10 @@ public class SacrificeManager2 : MonoBehaviour
             if (item.activeSelf) item.SetActive(false);   // committed = disabled GameObject
         }
 
+        // NEW  add this to grow the pot from this commit's coins
+        if (PotManager.Instance != null)
+            PotManager.Instance.AddFromLastCommit();
+
         EnforceCommittedDisabled(); // also covers PermaSac items
         RebuildLists();
     }
