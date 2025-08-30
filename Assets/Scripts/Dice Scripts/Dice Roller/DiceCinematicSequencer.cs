@@ -26,9 +26,10 @@ public class DiceCinematicSequencer : MonoBehaviour
     public AnimationCurve ease = null;
 
     [Header("UI")]
-    public TextMeshProUGUI totalTMP;            // <-- assign your TMP Text here
-    public string totalPrefix = "";             // e.g. "Total: "
-    public float addNumberAnimTime = 0.3f;      // how long to animate the increase
+    public TextMeshProUGUI totalTMP;
+    public string totalPrefix = "";
+    public float addNumberAnimTime = 0.3f;
+    public GameObject textBox2;   // enable at the end of sequence
 
     bool playing;
 
@@ -38,7 +39,7 @@ public class DiceCinematicSequencer : MonoBehaviour
         public Quaternion rot;
         public float fov;
         public Transform look;
-        public int dieValue;    // parsed int value for this die
+        public int dieValue;
     }
 
     void Awake()
@@ -47,7 +48,6 @@ public class DiceCinematicSequencer : MonoBehaviour
         if (ease == null) ease = AnimationCurve.EaseInOut(0, 0, 1, 1);
     }
 
-    // Call this when all dice are settled (from DiceRollManager)
     public void PlayComputedForSettled()
     {
         if (playing || !cam || !homePose) return;
@@ -65,8 +65,6 @@ public class DiceCinematicSequencer : MonoBehaviour
             var pos = C + U * shotHeight + horiz;
             var dir = (C - pos).normalized;
             var rot = Quaternion.LookRotation(dir, U);
-
-            // parse the die’s rolled value
             int dieVal = ParseIntSafe(r.resultValue);
 
             shots.Add(new Shot { pos = pos, rot = rot, fov = shotFOV, look = r.transform, dieValue = dieVal });
@@ -97,20 +95,15 @@ public class DiceCinematicSequencer : MonoBehaviour
     IEnumerator PlaySequence(List<Shot> shots)
     {
         playing = true;
-
-        // start from the running ante total (carry across rounds)
         int runningTotal = AnteManager.Instance ? AnteManager.Instance.cumulativeTotal : 0;
         if (totalTMP) totalTMP.text = totalPrefix + runningTotal.ToString();
 
         for (int i = 0; i < shots.Count; i++)
         {
             var s = shots[i];
-
-            // move in
             yield return MoveCam(cam.transform.position, cam.transform.rotation, cam.fieldOfView,
                                  s.pos, s.rot, s.fov, moveDuration);
 
-            // hold and animate the number adding this die's value
             float t = 0f;
             int startVal = runningTotal;
             int endVal = runningTotal + Mathf.Max(0, s.dieValue);
@@ -119,7 +112,6 @@ public class DiceCinematicSequencer : MonoBehaviour
             {
                 t += Time.deltaTime;
 
-                // gently keep looking at the die
                 if (s.look)
                 {
                     var U = GetRefUp(s.look.position);
@@ -127,7 +119,6 @@ public class DiceCinematicSequencer : MonoBehaviour
                     cam.transform.rotation = Quaternion.Slerp(cam.transform.rotation, want, 0.25f);
                 }
 
-                // animate number from startVal -> endVal
                 if (totalTMP)
                 {
                     float nt = Mathf.Clamp01(t / Mathf.Max(0.0001f, addNumberAnimTime));
@@ -138,26 +129,22 @@ public class DiceCinematicSequencer : MonoBehaviour
                 yield return null;
             }
 
-            runningTotal = endVal; // carry forward across shots (and rounds)
+            runningTotal = endVal;
         }
 
-        // return to home
         yield return MoveCam(cam.transform.position, cam.transform.rotation, cam.fieldOfView,
                              homePose.position, homePose.rotation, homeFOV, returnDuration);
 
         playing = false;
         PlayerStateMachine.Instance?.SetActive();
 
-        // destroy all spawned dice after cinematic
         foreach (var die in DiceRolling.SpawnedDice)
             if (die != null) Destroy(die);
         DiceRolling.SpawnedDice.Clear();
 
-        // apply this round's result to the ante system
         var roundTotal = DiceRollManager.Instance ? DiceRollManager.Instance.totalInt : 0;
         AnteManager.Instance?.ApplyRoundResult(roundTotal);
 
-        // advance: if early win, jump straight to Shop; else follow normal order
         var sm = RoundStateMachine.Instance;
         if (sm != null)
         {
@@ -166,9 +153,10 @@ public class DiceCinematicSequencer : MonoBehaviour
             else
                 sm.ChangeState(sm.GetNextState());
         }
+
+        // Enable Textbox2 at the end
+        if (textBox2) textBox2.SetActive(true);
     }
-
-
 
     IEnumerator MoveCam(Vector3 fromPos, Quaternion fromRot, float fromFOV,
                         Vector3 toPos, Quaternion toRot, float toFOV, float dur)
@@ -191,7 +179,6 @@ public class DiceCinematicSequencer : MonoBehaviour
     static int ParseIntSafe(string s)
     {
         if (int.TryParse(s, out var v)) return v;
-        // If your sideValues contain non-numeric labels like "Crit", return a value or 0 here.
         return 0;
     }
 }

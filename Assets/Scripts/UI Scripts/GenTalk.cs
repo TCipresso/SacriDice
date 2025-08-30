@@ -3,22 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class IntroSequence : MonoBehaviour
+public class GenTalk : MonoBehaviour
 {
     [Header("UI")]
-    public GameObject textBox;
     public TextMeshProUGUI textTarget;
-    public GameObject HandsUI;
-    public GameObject SacrificeButton;
 
     [Header("Lines (in order)")]
     [TextArea] public List<string> lines = new List<string>();
 
     [Header("Timing")]
-    [Min(0f)] public float initialDelay = 2f;
     [Min(0f)] public float charDelay = 0.03f;
     [Min(0f)] public float postLineDelay = 1.5f;
-    public bool startOnEnable = true;
 
     [Header("Typing Sound")]
     public AudioClip keyClip;
@@ -42,51 +37,28 @@ public class IntroSequence : MonoBehaviour
 
     void OnEnable()
     {
-        if (startOnEnable)
-            StartIntro();
-    }
-
-    [ContextMenu("Start Intro")]
-    public void StartIntro()
-    {
         if (runCo != null) StopCoroutine(runCo);
-        runCo = StartCoroutine(RunIntro());
+        runCo = StartCoroutine(RunTalk());
     }
 
-    [ContextMenu("Stop Intro")]
-    public void StopIntro()
-    {
-        if (runCo != null) StopCoroutine(runCo);
-        runCo = null;
-        running = false;
-    }
-
-    IEnumerator RunIntro()
+    IEnumerator RunTalk()
     {
         running = true;
         if (textTarget) textTarget.text = "";
 
         if (lines == null || lines.Count == 0 || textTarget == null)
         {
-            Debug.LogWarning("[IntroSequence] No lines or text target set.");
+            Debug.LogWarning("[GenTalk] No lines or text target set.");
             running = false;
             yield break;
         }
 
-        if (initialDelay > 0f) yield return new WaitForSeconds(initialDelay);
-        if (textBox) textBox.SetActive(true);
-
         for (int i = 0; i < lines.Count; i++)
         {
             yield return TypeRoutine(lines[i]);
-
-            if (i == 4 && HandsUI) HandsUI.SetActive(true);
-            if (i == 7 && SacrificeButton) SacrificeButton.SetActive(true);
-
             if (postLineDelay > 0f) yield return new WaitForSeconds(postLineDelay);
         }
 
-        Debug.Log("[IntroSequence] Reached end of lines.");
         running = false;
         runCo = null;
     }

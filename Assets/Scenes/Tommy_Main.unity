@@ -33007,7 +33007,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7942133bd608c1a41bf3114079933ed1, type: 2}
+  - {fileID: 2100000, guid: f849284454dbcaf4eb89b3b5e60467cf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -51876,6 +51876,7 @@ MonoBehaviour:
   totalTMP: {fileID: 683281781}
   totalPrefix: 
   addNumberAnimTime: 0.3
+  textBox2: {fileID: 0}
 --- !u!114 &1583091338
 MonoBehaviour:
   m_ObjectHideFlags: 0
