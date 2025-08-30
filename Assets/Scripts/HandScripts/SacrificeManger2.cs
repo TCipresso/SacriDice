@@ -197,7 +197,43 @@ public class SacrificeManager2 : MonoBehaviour
             }
         }
 
-        // Price left side
+        // --- NEW: detect "all fingers selected" per side (so we also commit the Hand object) ---
+        bool leftFullByFingers = false;
+        bool rightFullByFingers = false;
+
+        // Count ACTIVE finger children (ignore the Hand-tagged object and already-disabled ones)
+        if (!leftHandPicked && leftHandParent)
+        {
+            int activeLeftFingerCount = 0;
+            var t = leftHandParent.transform;
+            for (int i = 0; i < t.childCount; i++)
+            {
+                var c = t.GetChild(i).gameObject;
+                if (!c.activeSelf) continue;
+                if (c.CompareTag(HAND_TAG)) { if (leftHandObj == null) leftHandObj = c; continue; }
+                activeLeftFingerCount++;
+            }
+            if (activeLeftFingerCount > 0 && leftFingers.Count == activeLeftFingerCount)
+                leftFullByFingers = true;
+        }
+
+        if (!rightHandPicked && rightHandParent)
+        {
+            int activeRightFingerCount = 0;
+            var t = rightHandParent.transform;
+            for (int i = 0; i < t.childCount; i++)
+            {
+                var c = t.GetChild(i).gameObject;
+                if (!c.activeSelf) continue;
+                if (c.CompareTag(HAND_TAG)) { if (rightHandObj == null) rightHandObj = c; continue; }
+                activeRightFingerCount++;
+            }
+            if (activeRightFingerCount > 0 && rightFingers.Count == activeRightFingerCount)
+                rightFullByFingers = true;
+        }
+
+        // -------------------- PRICING --------------------
+        // NOTE: If full-by-fingers, we DO NOT add extra hand value (avoids double-count).
         if (leftHandPicked)
         {
             var stats = GetStats(leftHandObj);
@@ -216,7 +252,6 @@ public class SacrificeManager2 : MonoBehaviour
             }
         }
 
-        // Price right side
         if (rightHandPicked)
         {
             var stats = GetStats(rightHandObj);
@@ -239,10 +274,11 @@ public class SacrificeManager2 : MonoBehaviour
         totalCoinsCommitted += lastCoinsValue;
         totalHealthCommitted += lastHealthValue;
 
-        // Build commit set (hands pull entire side)
+        // -------------------- BUILD COMMIT SET --------------------
         var toCommit = new HashSet<GameObject>(SelectedSac);
 
-        if (leftHandPicked && leftHandParent)
+        // If the actual Hand was picked OR all fingers were picked, commit the whole side (includes Hand)
+        if ((leftHandPicked || leftFullByFingers) && leftHandParent)
         {
             var t = leftHandParent.transform;
             for (int i = 0; i < t.childCount; i++)
@@ -251,7 +287,7 @@ public class SacrificeManager2 : MonoBehaviour
                 if (child && child.activeSelf) toCommit.Add(child);
             }
         }
-        if (rightHandPicked && rightHandParent)
+        if ((rightHandPicked || rightFullByFingers) && rightHandParent)
         {
             var t = rightHandParent.transform;
             for (int i = 0; i < t.childCount; i++)
@@ -261,7 +297,7 @@ public class SacrificeManager2 : MonoBehaviour
             }
         }
 
-        // Move and disable
+        // -------------------- MOVE & DISABLE --------------------
         SelectedSac.Clear();
 
         foreach (var item in toCommit)
@@ -277,13 +313,14 @@ public class SacrificeManager2 : MonoBehaviour
             if (item.activeSelf) item.SetActive(false);   // committed = disabled GameObject
         }
 
-        // NEW  add this to grow the pot from this commit's coins
+        // Grow the pot from this commit's coins
         if (PotManager.Instance != null)
             PotManager.Instance.AddFromLastCommit();
 
         EnforceCommittedDisabled(); // also covers PermaSac items
         RebuildLists();
     }
+
 
     private LimbStats GetStats(GameObject go)
     {
