@@ -37,7 +37,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ce1611ace1a9a4a8284d45a924bdcd, type: 3}
   m_Name: Dithering
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   lut:
     m_OverrideState: 1
     m_Value: {fileID: 2800000, guid: 039004ec2fad19949bfc60fa90b758a6, type: 3}
@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36e21a9f18817d444b2c00478e04a58e, type: 3}
   m_Name: Posterize
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   hsvMode:
     m_OverrideState: 1
     m_Value: 1
