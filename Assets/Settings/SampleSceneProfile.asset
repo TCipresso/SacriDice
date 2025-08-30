@@ -390,13 +390,13 @@ MonoBehaviour:
   active: 0
   amount:
     m_OverrideState: 1
-    m_Value: 0.219
+    m_Value: 1
   resolution:
     m_OverrideState: 0
     m_Value: 240
   resolutionPreset:
     m_OverrideState: 1
-    m_Value: 600
+    m_Value: 200
   preserveAspectRatio:
     m_OverrideState: 1
     m_Value: 1

@@ -29,10 +29,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a052916d162d3448e654173d8cc8e3, type: 3}
   m_Name: MKEdgeDetectionRendererFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   workMode: 1
   precision:
-    _value: 1
+    _value: 0
   largeKernel:
     _value: 0
   mediumKernel:
@@ -40,7 +40,7 @@ MonoBehaviour:
   smallKernel:
     _value: 0
   inputData:
-    _value: 3
+    _value: -1
   lineHardness:
     _value: 0.5
     _minValue: 0
@@ -194,7 +194,8 @@ MonoBehaviour:
   - {fileID: -3711343240249055168}
   - {fileID: -3568988633931903376}
   - {fileID: 4882587402586274676}
-  m_RendererFeatureMap: ad6b866f10d7b46c700e152bbf6778ce7959d0f274fae792
+  - {fileID: 1636052755972974714}
+  m_RendererFeatureMap: ad6b866f10d7b46cf1bb283bd57fdd14b6e74b24bc8bdaf37eb393ff15e8d523d95a948833fb1e783fe2cbc031247c104068688dfca87ecc700e152bbf6778ce74bbf3a35f6fc2437a689139506db416
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -254,6 +255,22 @@ MonoBehaviour:
     executionOrder: 0
     alwaysEnable: 0
     cameraTypes: 5
+--- !u!114 &1636052755972974714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 052a0051f28380a49905d797cf6fd45d, type: 3}
+  m_Name: MKToonPerObjectOutlines
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &2582225142546674558
 MonoBehaviour:
   m_ObjectHideFlags: 0
