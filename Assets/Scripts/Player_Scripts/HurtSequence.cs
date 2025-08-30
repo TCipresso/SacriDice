@@ -21,7 +21,7 @@ public class HurtSequence : MonoBehaviour
     public float preRotateDelay = 3f;     // wait after showing Textbox
     public float rotateDuration = 3f;     // rotate to the right (yaw)
     public float returnDuration = 3f;     // rotate back
-    public float holdAtRightDuration = 3f; // (kept, but not used once shakes are enabled)
+    public float holdAtRightDuration = 3f;
 
     [Header("Pitch (X-axis)")]
     public float defaultCameraPitchX = 22.35f;
@@ -39,22 +39,39 @@ public class HurtSequence : MonoBehaviour
     Coroutine pitchRoutine;
     bool running;
 
+    // --- Clever reset cache ---
+    Vector3 cleverStartPos;
+    Quaternion cleverStartRot;
+    bool cleverStartCached = false;
+
     void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-        // Optional: DontDestroyOnLoad(gameObject);
+
+        // Cache Clever's starting transform
+        if (Clever)
+        {
+            cleverStartPos = Clever.transform.position;
+            cleverStartRot = Clever.transform.rotation;
+            cleverStartCached = true;
+        }
     }
 
-    // Called by the Sacrifice button (CommitSelected is called elsewhere)
-    // - Enables Clever
-    // - Disables HandUI and SacButton
-    // - Smoothly rotates camera pitch (X) to 0°
+    // Called by the Sacrifice button (CommitSelected elsewhere)
     public void OnSacrificePressed()
     {
         if (Clever) Clever.SetActive(true);
         if (HandUI) HandUI.SetActive(false);
         if (SacButton) SacButton.SetActive(false);
+
+        // Ensure Clever start pose is cached even if set late
+        if (Clever && !cleverStartCached)
+        {
+            cleverStartPos = Clever.transform.position;
+            cleverStartRot = Clever.transform.rotation;
+            cleverStartCached = true;
+        }
 
         var cam = GetCam();
         if (cam != null)
@@ -64,7 +81,7 @@ public class HurtSequence : MonoBehaviour
         }
     }
 
-    // Call this to run the rest of the cinematic (textbox -> yaw right -> 3 shakes -> yaw back -> roll UI)
+    // Run the cinematic (textbox -> yaw right -> shakes -> yaw back -> roll UI)
     public void StartSac()
     {
         if (running) return;
@@ -98,33 +115,41 @@ public class HurtSequence : MonoBehaviour
             Vector3 targetRight = new Vector3(startEuler.x, startEuler.y + rightYawDegrees, startEuler.z);
             yield return RotateTo(cam, targetRight, rotateDuration);
 
-            // 2) fire 3 shakes at random intervals while looking away
-            // (validate range)
+            // 2) fire shakes at random intervals while looking away
             float minDelay = Mathf.Min(delayBetweenShakes.x, delayBetweenShakes.y);
             float maxDelay = Mathf.Max(delayBetweenShakes.x, delayBetweenShakes.y);
             for (int i = 0; i < Mathf.Max(0, shakes); i++)
             {
-                if (shaker != null)
-                {
-                    shaker.TriggerShake(shakeDuration, shakeMagnitude);
-                }
-                // random pause until next shake
-                float wait = Random.Range(minDelay, maxDelay);
-                yield return new WaitForSeconds(wait);
+                if (shaker != null) shaker.TriggerShake(shakeDuration, shakeMagnitude);
+                yield return new WaitForSeconds(Random.Range(minDelay, maxDelay));
             }
 
-            // 3) rotate yaw back to your specified "home" (X=22.35, Y=0, keep Z)
+            // 3) rotate yaw back to "home" (X=22.35, Y=0, keep Z)
             Vector3 backEuler = new Vector3(22.35f, 0f, startEuler.z);
             yield return RotateTo(cam, backEuler, returnDuration);
         }
 
         if (RollUI) RollUI.SetActive(true);
 
+        // ---- Reset Clever for next round ----
+        ResetCleverToStart();
+
         running = false;
         sequenceRoutine = null;
     }
 
     // --- Helpers ---
+
+    void ResetCleverToStart()
+    {
+        if (Clever && cleverStartCached)
+        {
+            var t = Clever.transform;
+            t.position = cleverStartPos;
+            t.rotation = cleverStartRot;
+            Clever.SetActive(false);
+        }
+    }
 
     Transform GetCam()
     {
