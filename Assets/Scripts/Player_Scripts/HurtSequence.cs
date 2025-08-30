@@ -20,16 +20,20 @@ public class HurtSequence : MonoBehaviour
     [Header("Timings")]
     public float preRotateDelay = 3f;     // wait after showing Textbox
     public float rotateDuration = 3f;     // rotate to the right (yaw)
-    public float returnDuration = 3f;     // rotate back to yaw 0
-    public float holdAtRightDuration = 3f;
-
+    public float returnDuration = 3f;     // rotate back
+    public float holdAtRightDuration = 3f; // (kept, but not used once shakes are enabled)
 
     [Header("Pitch (X-axis)")]
-    [Tooltip("Saved default camera pitch (X) in degrees.")]
     public float defaultCameraPitchX = 22.35f;
-    [Tooltip("Time to smoothly rotate camera pitch to 0° when sacrifice is pressed.")]
     public float pitchToZeroDuration = 1.25f;
     public AnimationCurve pitchEasing = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+
+    [Header("Shake Sequence")]
+    public CameraShakeSimple shaker;            // assign your camera/canvas shaker
+    public int shakes = 3;                      // total shakes to fire
+    public Vector2 delayBetweenShakes = new Vector2(0.35f, 1.0f); // random wait between shakes
+    public float shakeDuration = 0.25f;         // duration passed to shaker
+    public float shakeMagnitude = 0.2f;         // magnitude passed to shaker
 
     Coroutine sequenceRoutine;
     Coroutine pitchRoutine;
@@ -44,7 +48,7 @@ public class HurtSequence : MonoBehaviour
 
     // Called by the Sacrifice button (CommitSelected is called elsewhere)
     // - Enables Clever
-    // - Disables HandUI
+    // - Disables HandUI and SacButton
     // - Smoothly rotates camera pitch (X) to 0°
     public void OnSacrificePressed()
     {
@@ -60,7 +64,7 @@ public class HurtSequence : MonoBehaviour
         }
     }
 
-    // Call this to run the rest of the cinematic (textbox -> yaw right -> yaw back -> show RollUI)
+    // Call this to run the rest of the cinematic (textbox -> yaw right -> 3 shakes -> yaw back -> roll UI)
     public void StartSac()
     {
         if (running) return;
@@ -87,20 +91,30 @@ public class HurtSequence : MonoBehaviour
         var cam = GetCam();
         if (cam != null)
         {
-            // keep original orientation (we'll return to this yaw)
+            // keep original orientation (we'll return to this orientation/pitch)
             Vector3 startEuler = cam.eulerAngles;
 
             // 1) rotate yaw to the right (relative)
             Vector3 targetRight = new Vector3(startEuler.x, startEuler.y + rightYawDegrees, startEuler.z);
             yield return RotateTo(cam, targetRight, rotateDuration);
 
-            // 2) HOLD at the right-turned angle
-            if (holdAtRightDuration > 0f)
-                yield return new WaitForSeconds(holdAtRightDuration);
+            // 2) fire 3 shakes at random intervals while looking away
+            // (validate range)
+            float minDelay = Mathf.Min(delayBetweenShakes.x, delayBetweenShakes.y);
+            float maxDelay = Mathf.Max(delayBetweenShakes.x, delayBetweenShakes.y);
+            for (int i = 0; i < Mathf.Max(0, shakes); i++)
+            {
+                if (shaker != null)
+                {
+                    shaker.TriggerShake(shakeDuration, shakeMagnitude);
+                }
+                // random pause until next shake
+                float wait = Random.Range(minDelay, maxDelay);
+                yield return new WaitForSeconds(wait);
+            }
 
-            // 3) rotate yaw back to ORIGINAL orientation (not zero)
+            // 3) rotate yaw back to your specified "home" (X=22.35, Y=0, keep Z)
             Vector3 backEuler = new Vector3(22.35f, 0f, startEuler.z);
-
             yield return RotateTo(cam, backEuler, returnDuration);
         }
 
@@ -109,8 +123,6 @@ public class HurtSequence : MonoBehaviour
         running = false;
         sequenceRoutine = null;
     }
-
-
 
     // --- Helpers ---
 
