@@ -19,14 +19,10 @@ public class Round2State : MonoBehaviour
         if (!shownOnce)
         {
             if (rollUI) rollUI.SetActive(false);
-            SacrificeManager2.Instance.ResetRoundCommitTotals(); // (your per-round dice reset)
+
+            SacrificeManager2.Instance.ResetRoundCommitTotals();
             SacrificeManager2.Instance.RebuildLists();
             SacrificeManager2.Instance.EnforceCommittedDisabled();
-            if (AnteManager.Instance && AnteManager.Instance.lastLoopWin)
-            {
-                SacrificeSystem.Instance.ResolveCollateralWin();
-                AnteManager.Instance.lastLoopWin = false;
-            }
 
             if (handPH) handPH.SetActive(true);
             if (commitButton) commitButton.SetActive(true);
@@ -34,8 +30,21 @@ public class Round2State : MonoBehaviour
         }
     }
 
+    // CommitSelected is invoked FIRST by the button.
     public void ConfirmHandAndShowRollUI()
     {
+        var mgr = SacrificeManager2.Instance;
+
+        // allow if a commit just happened (any priced value) OR a selection still exists
+        bool justCommitted = mgr != null && (mgr.lastDiceValue != 0 || mgr.lastCoinsValue != 0 || mgr.lastHealthValue != 0);
+        bool hasSelection = mgr != null && mgr.SelectedSac != null && mgr.SelectedSac.Count > 0;
+
+        if (!justCommitted && !hasSelection)
+        {
+            Debug.LogWarning("[Sacrifice] You need to select a sacrifice first.");
+            return;
+        }
+
         if (handPH) handPH.SetActive(false);
         if (commitButton) commitButton.SetActive(false);
         if (rollUI) rollUI.SetActive(true);
