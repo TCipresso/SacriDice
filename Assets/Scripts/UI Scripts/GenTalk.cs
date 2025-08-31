@@ -7,6 +7,7 @@ public class GenTalk : MonoBehaviour
 {
     [Header("UI")]
     public TextMeshProUGUI textTarget;
+    public GameObject TotalRoll;  // Enable this after element 1 finishes
 
     [Header("Lines (in order)")]
     [TextArea] public List<string> lines = new List<string>();
@@ -56,6 +57,11 @@ public class GenTalk : MonoBehaviour
         for (int i = 0; i < lines.Count; i++)
         {
             yield return TypeRoutine(lines[i]);
+
+            // Enable TotalRoll when element 1 finishes
+            if (i == 1 && TotalRoll != null)
+                TotalRoll.SetActive(true);
+
             if (postLineDelay > 0f) yield return new WaitForSeconds(postLineDelay);
         }
 

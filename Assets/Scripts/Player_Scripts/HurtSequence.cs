@@ -6,21 +6,24 @@ public class HurtSequence : MonoBehaviour
     public static HurtSequence Instance { get; private set; }
 
     [Header("Objects")]
-    public GameObject Clever;      // shown immediately when Sacrifice is pressed
-    public GameObject Textbox;     // shown at StartSac()
-    public GameObject RollUI;      // enabled after sequence finishes
-    public GameObject HandUI;      // DISABLED when Sacrifice is pressed
+    public GameObject Clever;
+    public GameObject Textbox;
+    public GameObject RollUI;
+    public GameObject HandUI;
     public GameObject SacButton;
 
+    [Header("Intro Mode")]
+    public bool IsIntro = false;
+    public GameObject TextBox3;
+
     [Header("Camera")]
-    public Transform playerCamera; // if null, falls back to Camera.main
-    [Tooltip("How many degrees to yaw to the right during the sequence.")]
+    public Transform playerCamera;
     public float rightYawDegrees = 45f;
 
     [Header("Timings")]
-    public float preRotateDelay = 3f;     // wait after showing Textbox
-    public float rotateDuration = 3f;     // rotate to the right (yaw)
-    public float returnDuration = 3f;     // rotate back
+    public float preRotateDelay = 3f;
+    public float rotateDuration = 3f;
+    public float returnDuration = 3f;
     public float holdAtRightDuration = 3f;
 
     [Header("Pitch (X-axis)")]
@@ -29,17 +32,16 @@ public class HurtSequence : MonoBehaviour
     public AnimationCurve pitchEasing = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
     [Header("Shake Sequence")]
-    public CameraShakeSimple shaker;            // assign your camera/canvas shaker
-    public int shakes = 3;                      // total shakes to fire
-    public Vector2 delayBetweenShakes = new Vector2(0.35f, 1.0f); // random wait between shakes
-    public float shakeDuration = 0.25f;         // duration passed to shaker
-    public float shakeMagnitude = 0.2f;         // magnitude passed to shaker
+    public CameraShakeSimple shaker;
+    public int shakes = 3;
+    public Vector2 delayBetweenShakes = new Vector2(0.35f, 1.0f);
+    public float shakeDuration = 0.25f;
+    public float shakeMagnitude = 0.2f;
 
     Coroutine sequenceRoutine;
     Coroutine pitchRoutine;
     bool running;
 
-    // --- Clever reset cache ---
     Vector3 cleverStartPos;
     Quaternion cleverStartRot;
     bool cleverStartCached = false;
@@ -49,7 +51,6 @@ public class HurtSequence : MonoBehaviour
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
 
-        // Cache Clever's starting transform
         if (Clever)
         {
             cleverStartPos = Clever.transform.position;
@@ -58,14 +59,12 @@ public class HurtSequence : MonoBehaviour
         }
     }
 
-    // Called by the Sacrifice button (CommitSelected elsewhere)
     public void OnSacrificePressed()
     {
         if (Clever) Clever.SetActive(true);
         if (HandUI) HandUI.SetActive(false);
         if (SacButton) SacButton.SetActive(false);
 
-        // Ensure Clever start pose is cached even if set late
         if (Clever && !cleverStartCached)
         {
             cleverStartPos = Clever.transform.position;
@@ -81,7 +80,6 @@ public class HurtSequence : MonoBehaviour
         }
     }
 
-    // Run the cinematic (textbox -> yaw right -> shakes -> yaw back -> roll UI)
     public void StartSac()
     {
         if (running) return;
@@ -101,21 +99,16 @@ public class HurtSequence : MonoBehaviour
 
         if (Textbox) Textbox.SetActive(true);
         yield return new WaitForSeconds(preRotateDelay);
-
-        // hide textbox after the pre-rotate delay
         if (Textbox) Textbox.SetActive(false);
 
         var cam = GetCam();
         if (cam != null)
         {
-            // keep original orientation (we'll return to this orientation/pitch)
             Vector3 startEuler = cam.eulerAngles;
 
-            // 1) rotate yaw to the right (relative)
             Vector3 targetRight = new Vector3(startEuler.x, startEuler.y + rightYawDegrees, startEuler.z);
             yield return RotateTo(cam, targetRight, rotateDuration);
 
-            // 2) fire shakes at random intervals while looking away
             float minDelay = Mathf.Min(delayBetweenShakes.x, delayBetweenShakes.y);
             float maxDelay = Mathf.Max(delayBetweenShakes.x, delayBetweenShakes.y);
             for (int i = 0; i < Mathf.Max(0, shakes); i++)
@@ -124,21 +117,24 @@ public class HurtSequence : MonoBehaviour
                 yield return new WaitForSeconds(Random.Range(minDelay, maxDelay));
             }
 
-            // 3) rotate yaw back to "home" (X=22.35, Y=0, keep Z)
             Vector3 backEuler = new Vector3(22.35f, 0f, startEuler.z);
             yield return RotateTo(cam, backEuler, returnDuration);
         }
 
-        if (RollUI) RollUI.SetActive(true);
+        if (IsIntro)
+        {
+            if (TextBox3) TextBox3.SetActive(true);
+        }
+        else
+        {
+            if (RollUI) RollUI.SetActive(true);
+        }
 
-        // ---- Reset Clever for next round ----
         ResetCleverToStart();
 
         running = false;
         sequenceRoutine = null;
     }
-
-    // --- Helpers ---
 
     void ResetCleverToStart()
     {
