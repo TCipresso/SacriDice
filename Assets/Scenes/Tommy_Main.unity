@@ -17552,7 +17552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7525405f4a80d90458d7f36f8cc43580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetAnte: 500
+  targetAnte: 10
   maxRounds: 3
   currentLoop: 0
   anteStep: 8
@@ -20483,7 +20483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35194c72008922b428b8e685754e8066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingCash: 50000
+  startingCash: 3
   cashText: {fileID: 1011467997}
 --- !u!1 &756774237
 GameObject:
@@ -51912,16 +51912,7 @@ MonoBehaviour:
   uiImagePrefab: {fileID: 2327415029496081339, guid: 48a11c62b60709e4b8d68fdd28e4a348, type: 3}
   GenDice: {fileID: 1267238363606168049, guid: 39c3fb8b17b86394b95a9013b0cd8627, type: 3}
   CurrGenDiceList: []
-  BoughtDiceList:
-  - {fileID: 1267238363606168049, guid: 2176e9c7db3870c4982ff363bbd9a4e1, type: 3}
-  - {fileID: 1267238363606168049, guid: 2dc0df8a896a15349a33d6d44c259bcc, type: 3}
-  - {fileID: 1267238363606168049, guid: 8cd662aa2df584f43a1e8fa768be3013, type: 3}
-  - {fileID: 1267238363606168049, guid: 6507f0a6c73e5c546abcfa6885667b85, type: 3}
-  - {fileID: 1267238363606168049, guid: d4182d2ff0124cb4aae73bfad76702ac, type: 3}
-  - {fileID: 1267238363606168049, guid: b1ac74e0ba9b0304da4f4547e5183e02, type: 3}
-  - {fileID: 1267238363606168049, guid: 451588166bbb4984d8051ed48ea7366e, type: 3}
-  - {fileID: 1267238363606168049, guid: 821b045f0a9b7424595accd1c512537a, type: 3}
-  - {fileID: 1267238363606168049, guid: 85c85aa3452ad1349b9d4069acde5638, type: 3}
+  BoughtDiceList: []
   CurrStash: []
 --- !u!4 &1583091336
 Transform:
