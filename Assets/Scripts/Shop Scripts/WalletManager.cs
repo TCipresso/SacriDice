@@ -10,6 +10,7 @@ public class WalletManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI cashText;
+    public GameObject WinScreen; // <-- add this in inspector
 
     public int CurrentCash { get; private set; }
 
@@ -50,5 +51,14 @@ public class WalletManager : MonoBehaviour
     {
         if (cashText != null)
             cashText.text = $"Chips: {CurrentCash}";
+    }
+
+    // Call this to enable the WinScreen
+    public void ShowWinScreen()
+    {
+        if (WinScreen != null)
+        {
+            WinScreen.SetActive(true);
+        }
     }
 }
