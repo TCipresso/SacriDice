@@ -711,6 +711,11 @@ MonoBehaviour:
   minPitch: 0.95
   maxPitch: 1.05
   allowOverlap: 1
+--- !u!4 &72703106 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 487cea18274372042b9b7fdbd2f1c476, type: 3}
+  m_PrefabInstance: {fileID: 281655284}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &74024550 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5867140215198209888, guid: 39c3fb8b17b86394b95a9013b0cd8627, type: 3}
@@ -4661,6 +4666,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 192764526}
+  - component: {fileID: 192764527}
   m_Layer: 0
   m_Name: Frankie
   m_TagString: Untagged
@@ -4684,8 +4690,25 @@ Transform:
   - {fileID: 237469008}
   - {fileID: 1329878323}
   - {fileID: 1309629740}
+  - {fileID: 72703106}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &192764527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192764525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acfa971198c47304a803fc2949777f24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amplitudeX: 0.01
+  amplitudeY: 0.2
+  frequencyX: 0.5
+  frequencyY: 1
 --- !u!1 &192784367
 GameObject:
   m_ObjectHideFlags: 0
@@ -6187,11 +6210,11 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 192764526}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 487cea18274372042b9b7fdbd2f1c476, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.31941
+      value: 0.31941003
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 487cea18274372042b9b7fdbd2f1c476, type: 3}
       propertyPath: m_LocalScale.y
@@ -6203,15 +6226,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 487cea18274372042b9b7fdbd2f1c476, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.51
+      value: 2.4860535
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 487cea18274372042b9b7fdbd2f1c476, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.507
+      value: 0.9711056
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 487cea18274372042b9b7fdbd2f1c476, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 32.467293
+      value: 16.045494
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 487cea18274372042b9b7fdbd2f1c476, type: 3}
       propertyPath: m_LocalRotation.w
@@ -20460,7 +20483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35194c72008922b428b8e685754e8066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingCash: 5
+  startingCash: 50000
   cashText: {fileID: 1011467997}
 --- !u!1 &756774237
 GameObject:
@@ -51889,7 +51912,16 @@ MonoBehaviour:
   uiImagePrefab: {fileID: 2327415029496081339, guid: 48a11c62b60709e4b8d68fdd28e4a348, type: 3}
   GenDice: {fileID: 1267238363606168049, guid: 39c3fb8b17b86394b95a9013b0cd8627, type: 3}
   CurrGenDiceList: []
-  BoughtDiceList: []
+  BoughtDiceList:
+  - {fileID: 1267238363606168049, guid: 2176e9c7db3870c4982ff363bbd9a4e1, type: 3}
+  - {fileID: 1267238363606168049, guid: 2dc0df8a896a15349a33d6d44c259bcc, type: 3}
+  - {fileID: 1267238363606168049, guid: 8cd662aa2df584f43a1e8fa768be3013, type: 3}
+  - {fileID: 1267238363606168049, guid: 6507f0a6c73e5c546abcfa6885667b85, type: 3}
+  - {fileID: 1267238363606168049, guid: d4182d2ff0124cb4aae73bfad76702ac, type: 3}
+  - {fileID: 1267238363606168049, guid: b1ac74e0ba9b0304da4f4547e5183e02, type: 3}
+  - {fileID: 1267238363606168049, guid: 451588166bbb4984d8051ed48ea7366e, type: 3}
+  - {fileID: 1267238363606168049, guid: 821b045f0a9b7424595accd1c512537a, type: 3}
+  - {fileID: 1267238363606168049, guid: 85c85aa3452ad1349b9d4069acde5638, type: 3}
   CurrStash: []
 --- !u!4 &1583091336
 Transform:
@@ -65627,10 +65659,15 @@ MonoBehaviour:
   messageText: {fileID: 0}
   shopUIRoot: {fileID: 264127544}
   shopItemPrefabs:
-  - {fileID: 5291583782501361957, guid: a95587e58e5e9644194142cd4d55e8ea, type: 3}
-  - {fileID: 5291583782501361957, guid: a95587e58e5e9644194142cd4d55e8ea, type: 3}
-  - {fileID: 5291583782501361957, guid: a95587e58e5e9644194142cd4d55e8ea, type: 3}
-  - {fileID: 5291583782501361957, guid: a95587e58e5e9644194142cd4d55e8ea, type: 3}
+  - {fileID: 5291583782501361957, guid: 259cc264eafdcd54e8f512f13ceb821f, type: 3}
+  - {fileID: 5291583782501361957, guid: 942e9f7937506f4449364005ed5e5b64, type: 3}
+  - {fileID: 5291583782501361957, guid: 1e4cd3dc6fcfaa346b226fd16c0a94c1, type: 3}
+  - {fileID: 5291583782501361957, guid: a864dd501310c8848882e6c383921265, type: 3}
+  - {fileID: 5291583782501361957, guid: 72b0077da63df114e82a4a6f56cb3967, type: 3}
+  - {fileID: 5291583782501361957, guid: 1918326a4ef34d54e9a1497073275fb0, type: 3}
+  - {fileID: 5291583782501361957, guid: 8c4c1ea97c17cd840a26f259d672c189, type: 3}
+  - {fileID: 5291583782501361957, guid: 7617be5448f8cd24b830a41d090c28f0, type: 3}
+  - {fileID: 5291583782501361957, guid: 2463e91026d3f664d8f145c933b6fdf2, type: 3}
   startAnchor: {fileID: 1601973807}
   endAnchor: {fileID: 1672574080}
   spacing: 3
@@ -67139,10 +67176,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 545820540161313529, guid: a95587e58e5e9644194142cd4d55e8ea, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a95587e58e5e9644194142cd4d55e8ea, type: 3}
 --- !u!114 &3469287837184487355 stripped
 MonoBehaviour:
@@ -67210,7 +67244,6 @@ SceneRoots:
   - {fileID: 192764526}
   - {fileID: 809378697}
   - {fileID: 861291395}
-  - {fileID: 281655284}
   - {fileID: 1206284503}
   - {fileID: 855237803}
   - {fileID: 4072538942566135624}
