@@ -7,18 +7,21 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grass
+  m_Name: Grass 2
   m_Shader: {fileID: 4800000, guid: df695d70c539c3d4c87b79de307ab7bb, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _MK_ARTISTIC_PROJECTION_SCREEN_SPACE
   - _MK_ENVIRONMENT_REFLECTIONS_ADVANCED
   - _MK_LIGHT_BANDED
   - _MK_RECEIVE_SHADOWS
   - _MK_SPECULAR_ISOTROPIC
   m_InvalidKeywords:
+  - _FRESNELHIGHLIGHTS_ON
   - _MK_ARTISTIC_ANIMATION_STUTTER
   - _MK_DETAIL_BLEND_MIX
+  - _MK_FRESNEL_HIGHLIGHTS
   - _MK_WRAPPED_DIFFUSE
   - _RECEIVESHADOWS_ON
   - _WRAPPEDLIGHTING_ON
@@ -59,7 +62,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DiffuseRamp:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d7c3d340235cfd64fbe9468fd8dc1384, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DissolveBorderRamp:
@@ -159,7 +162,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularRamp:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d7c3d340235cfd64fbe9468fd8dc1384, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ThicknessMap:
@@ -190,8 +193,8 @@ Material:
     m_Floats:
     - _AddPrecomputedVelocity: 0
     - _AdditionalLightsFalloff: 1
-    - _AdditionalLightsThreshold: 0.5
-    - _AdvancedTab: 1
+    - _AdditionalLightsThreshold: 0
+    - _AdvancedTab: 0
     - _AlbedoMapIntensity: 1
     - _AlembicMotionVectors: 0
     - _AlphaClipping: 0
@@ -199,7 +202,7 @@ Material:
     - _Anisotropy: 0
     - _Artistic: 0
     - _ArtisticFrequency: 1
-    - _ArtisticProjection: 0
+    - _ArtisticProjection: 1
     - _ArtisticShadowFilter: 0
     - _Blend: 0
     - _BlendDst: 0
@@ -228,26 +231,26 @@ Material:
     - _DrawnMapScale: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 2
-    - _FresnelHighlights: 0
+    - _FresnelHighlights: 1
     - _GlossMapScale: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 0
     - _GlossyReflections: 1
     - _GoochDarkRemapMax: 1
     - _GoochDarkRemapMin: 0
     - _GoochRampIntensity: 0.5
     - _HatchingMapScale: 1
     - _Hue: 0
-    - _IndirectFade: 0.1
-    - _Initialized: 0
-    - _InputTab: 1
+    - _IndirectFade: 1
+    - _Initialized: 1
+    - _InputTab: 0
     - _Iridescence: 0
     - _IridescenceSize: 1
     - _IridescenceSmoothness: 0.5
     - _IridescenceThresholdOffset: 0
     - _Light: 2
-    - _LightBands: 4
-    - _LightBandsScale: 0.5
-    - _LightThreshold: 0.5
+    - _LightBands: 12
+    - _LightBandsScale: 0.559
+    - _LightThreshold: 0.493
     - _LightTransmission: 0
     - _LightTransmissionDistortion: 0.25
     - _LightTransmissionIntensity: 1
@@ -258,15 +261,16 @@ Material:
     - _NormalMapIntensity: 1
     - _OcclusionMapIntensity: 1
     - _OcclusionStrength: 1
-    - _OptionsTab: 1
-    - _Outline: 3
+    - _OptionsTab: 0
+    - _Outline: 1
     - _OutlineClipOffset: 0
     - _OutlineConstantSize: 0
     - _OutlineData: 0
     - _OutlineFadeMax: 2
     - _OutlineFadeMin: 0.25
     - _OutlineNoise: 0
-    - _OutlineSize: 5
+    - _OutlineSize: 35
+    - _OutlineTab: 1
     - _Parallax: 0.02
     - _ReceiveShadows: 1
     - _RenderFace: 0
@@ -282,7 +286,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _Specular: 1
     - _SpecularHighlights: 1
-    - _SpecularIntensity: 5
+    - _SpecularIntensity: 1
     - _SpecularSmoothness: 0
     - _SpecularThresholdOffset: 0.25
     - _SrcBlend: 1
@@ -311,8 +315,8 @@ Material:
     - _DetailColor: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveBorderColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GoochBrightColor: {r: 1, g: 0.9764706, b: 0, a: 1}
-    - _GoochDarkColor: {r: 0.8509804, g: 0, b: 1, a: 1}
+    - _GoochBrightColor: {r: 1, g: 1, b: 1, a: 1}
+    - _GoochDarkColor: {r: 0, g: 0, b: 0, a: 1}
     - _IridescenceColor: {r: 1, g: 1, b: 1, a: 0.5}
     - _LightTransmissionColor: {r: 1, g: 0.65, b: 0, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}

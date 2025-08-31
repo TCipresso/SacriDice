@@ -195,8 +195,8 @@ Material:
     m_Floats:
     - _AddPrecomputedVelocity: 0
     - _AdditionalLightsFalloff: 1
-    - _AdditionalLightsThreshold: 0.5
-    - _AdvancedTab: 1
+    - _AdditionalLightsThreshold: 0
+    - _AdvancedTab: 0
     - _AlbedoMapIntensity: 1
     - _AlembicMotionVectors: 0
     - _AlphaClipping: 0
@@ -230,7 +230,7 @@ Material:
     - _DissolveMapScale: 1
     - _DrawnClampMax: 1
     - _DrawnClampMin: 0
-    - _DrawnMapScale: 2
+    - _DrawnMapScale: 15
     - _DstBlend: 0
     - _EnvironmentReflections: 2
     - _FresnelHighlights: 1
