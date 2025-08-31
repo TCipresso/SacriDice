@@ -7,10 +7,12 @@ public class WalletManager : MonoBehaviour
 
     [Header("Starting Settings")]
     [Min(0)] public int startingCash = 100;
+    [Min(1)] public int targetCash = 100; // cash required to win
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI cashText;
-    public GameObject WinScreen; // <-- add this in inspector
+    public GameObject WinScreen;
+    public GameObject TextBox8;  // show this if they don't meet the requirement
 
     public int CurrentCash { get; private set; }
 
@@ -53,12 +55,15 @@ public class WalletManager : MonoBehaviour
             cashText.text = $"Chips: {CurrentCash}";
     }
 
-    // Call this to enable the WinScreen
     public void ShowWinScreen()
     {
-        if (WinScreen != null)
+        if (CurrentCash >= targetCash)
         {
-            WinScreen.SetActive(true);
+            if (WinScreen != null) WinScreen.SetActive(true);
+        }
+        else
+        {
+            if (TextBox8 != null) TextBox8.SetActive(true);
         }
     }
 }
