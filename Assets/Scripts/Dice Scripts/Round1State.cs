@@ -10,6 +10,7 @@ public class Round1State : MonoBehaviour
 
     public void Run()
     {
+        Debug.Log("Round1");
         var sm = RoundStateMachine.Instance; if (!sm) return;
         if (sm.GetFlag(RoundStateMachine.RoundState.Round1)) return;
 

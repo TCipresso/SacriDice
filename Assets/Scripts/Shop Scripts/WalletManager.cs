@@ -49,6 +49,6 @@ public class WalletManager : MonoBehaviour
     void Refresh()
     {
         if (cashText != null)
-            cashText.text = $"Cash: $ {CurrentCash}";
+            cashText.text = $"Chips: {CurrentCash}";
     }
 }

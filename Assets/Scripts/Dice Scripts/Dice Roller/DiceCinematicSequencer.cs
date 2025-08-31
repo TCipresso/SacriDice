@@ -32,8 +32,17 @@ public class DiceCinematicSequencer : MonoBehaviour
     public GameObject textBox2;
     public GameObject TextBox5;
 
+    [Header("Arrival Sound")]
+    public AudioClip arriveClip;
+    public AudioSource arriveSource;
+    [Range(0f, 1f)] public float arriveVolume = 1f;
+    public float basePitch = 1f;
+    public float pitchStep = 0.07f;
+    public float maxPitch = 2f;
+
     bool playing;
     int playSequenceCount;
+    float currentPitch;
 
     struct Shot
     {
@@ -48,6 +57,13 @@ public class DiceCinematicSequencer : MonoBehaviour
     {
         if (!cam) cam = Camera.main;
         if (ease == null) ease = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+        if (!arriveSource)
+        {
+            arriveSource = gameObject.AddComponent<AudioSource>();
+            arriveSource.playOnAwake = false;
+            arriveSource.spatialBlend = 0f; // 2D UI-style blip
+        }
     }
 
     public void PlayComputedForSettled()
@@ -97,14 +113,26 @@ public class DiceCinematicSequencer : MonoBehaviour
     IEnumerator PlaySequence(List<Shot> shots)
     {
         playing = true;
+        currentPitch = basePitch;
+
         int runningTotal = AnteManager.Instance ? AnteManager.Instance.cumulativeTotal : 0;
         if (totalTMP) totalTMP.text = totalPrefix + runningTotal.ToString();
 
         for (int i = 0; i < shots.Count; i++)
         {
             var s = shots[i];
+
+            // move camera to the die
             yield return MoveCam(cam.transform.position, cam.transform.rotation, cam.fieldOfView,
                                  s.pos, s.rot, s.fov, moveDuration);
+
+            // arrived at this die — play arrival sound with rising pitch
+            if (arriveClip && arriveSource)
+            {
+                arriveSource.pitch = Mathf.Clamp(currentPitch, 0.1f, maxPitch);
+                arriveSource.PlayOneShot(arriveClip, arriveVolume);
+                currentPitch += pitchStep;
+            }
 
             float t = 0f;
             int startVal = runningTotal;
