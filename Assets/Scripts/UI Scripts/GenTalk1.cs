@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GenTalk : MonoBehaviour
+public class GenTalk1 : MonoBehaviour
 {
     [Header("UI")]
     public TextMeshProUGUI textTarget;
-    public GameObject TotalRoll;
-    public GameObject AnteBox;     // new object to enable on element 2
+    public GameObject TotalRoll;  // Enable this after element 1 finishes
 
     [Header("Lines (in order)")]
     [TextArea] public List<string> lines = new List<string>();
@@ -59,11 +58,9 @@ public class GenTalk : MonoBehaviour
         {
             yield return TypeRoutine(lines[i]);
 
+            // Enable TotalRoll when element 1 finishes
             if (i == 1 && TotalRoll != null)
                 TotalRoll.SetActive(true);
-
-            if (i == 2 && AnteBox != null)
-                AnteBox.SetActive(true);
 
             if (postLineDelay > 0f) yield return new WaitForSeconds(postLineDelay);
         }

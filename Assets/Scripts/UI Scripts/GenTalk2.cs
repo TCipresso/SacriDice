@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GenTalk : MonoBehaviour
+public class GenTalk2 : MonoBehaviour
 {
     [Header("UI")]
     public TextMeshProUGUI textTarget;
-    public GameObject TotalRoll;
-    public GameObject AnteBox;     // new object to enable on element 2
+    public GameObject RollUI;
 
     [Header("Lines (in order)")]
     [TextArea] public List<string> lines = new List<string>();
@@ -50,7 +49,7 @@ public class GenTalk : MonoBehaviour
 
         if (lines == null || lines.Count == 0 || textTarget == null)
         {
-            Debug.LogWarning("[GenTalk] No lines or text target set.");
+            Debug.LogWarning("[GenTalk2] No lines or text target set.");
             running = false;
             yield break;
         }
@@ -59,11 +58,8 @@ public class GenTalk : MonoBehaviour
         {
             yield return TypeRoutine(lines[i]);
 
-            if (i == 1 && TotalRoll != null)
-                TotalRoll.SetActive(true);
-
-            if (i == 2 && AnteBox != null)
-                AnteBox.SetActive(true);
+            if (i == 3 && RollUI != null)
+                RollUI.SetActive(true);
 
             if (postLineDelay > 0f) yield return new WaitForSeconds(postLineDelay);
         }
