@@ -21435,7 +21435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35194c72008922b428b8e685754e8066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingCash: 5
+  startingCash: 0
   targetCash: 100
   cashText: {fileID: 1011467997}
   WinScreen: {fileID: 1240430637}
