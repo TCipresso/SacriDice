@@ -5,33 +5,27 @@ public class HurtSequence : MonoBehaviour
 {
     public static HurtSequence Instance { get; private set; }
 
-    [Header("Objects")]
     public GameObject Clever;
     public GameObject Textbox;
     public GameObject RollUI;
     public GameObject HandUI;
     public GameObject SacButton;
 
-    [Header("Intro Mode")]
     public bool IsIntro = false;
     public GameObject TextBox3;
 
-    [Header("Camera")]
     public Transform playerCamera;
     public float rightYawDegrees = 45f;
 
-    [Header("Timings")]
     public float preRotateDelay = 3f;
     public float rotateDuration = 3f;
     public float returnDuration = 3f;
     public float holdAtRightDuration = 3f;
 
-    [Header("Pitch (X-axis)")]
     public float defaultCameraPitchX = 22.35f;
     public float pitchToZeroDuration = 1.25f;
     public AnimationCurve pitchEasing = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
-    [Header("Shake Sequence")]
     public CameraShakeSimple shaker;
     public int shakes = 3;
     public Vector2 delayBetweenShakes = new Vector2(0.35f, 1.0f);
@@ -124,6 +118,7 @@ public class HurtSequence : MonoBehaviour
         if (IsIntro)
         {
             if (TextBox3) TextBox3.SetActive(true);
+            IsIntro = false;
         }
         else
         {

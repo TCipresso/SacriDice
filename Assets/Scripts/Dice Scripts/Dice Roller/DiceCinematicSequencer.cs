@@ -29,9 +29,11 @@ public class DiceCinematicSequencer : MonoBehaviour
     public TextMeshProUGUI totalTMP;
     public string totalPrefix = "";
     public float addNumberAnimTime = 0.3f;
-    public GameObject textBox2;   // enable at the end of sequence
+    public GameObject textBox2;
+    public GameObject TextBox5;
 
     bool playing;
+    int playSequenceCount;
 
     struct Shot
     {
@@ -154,8 +156,10 @@ public class DiceCinematicSequencer : MonoBehaviour
                 sm.ChangeState(sm.GetNextState());
         }
 
-        // Enable Textbox2 at the end
         if (textBox2) textBox2.SetActive(true);
+
+        playSequenceCount++;
+        if (playSequenceCount == 2 && TextBox5) TextBox5.SetActive(true);
     }
 
     IEnumerator MoveCam(Vector3 fromPos, Quaternion fromRot, float fromFOV,

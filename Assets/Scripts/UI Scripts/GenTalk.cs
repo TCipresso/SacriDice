@@ -8,7 +8,9 @@ public class GenTalk : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI textTarget;
     public GameObject TotalRoll;
-    public GameObject AnteBox;     // new object to enable on element 2
+    public GameObject AnteBox;
+    public GameObject RollUI;      // enable at the end
+    public GameObject TextBox4;    // enable at the end
 
     [Header("Lines (in order)")]
     [TextArea] public List<string> lines = new List<string>();
@@ -64,6 +66,13 @@ public class GenTalk : MonoBehaviour
 
             if (i == 2 && AnteBox != null)
                 AnteBox.SetActive(true);
+
+            // after the last element finishes
+            if (i == lines.Count - 1)
+            {
+                if (RollUI != null) RollUI.SetActive(true);
+                if (TextBox4 != null) TextBox4.SetActive(true);
+            }
 
             if (postLineDelay > 0f) yield return new WaitForSeconds(postLineDelay);
         }

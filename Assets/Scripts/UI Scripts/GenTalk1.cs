@@ -1,13 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class GenTalk1 : MonoBehaviour
 {
     [Header("UI")]
     public TextMeshProUGUI textTarget;
-    public GameObject TotalRoll;  // Enable this after element 1 finishes
+    public GameObject TotalRoll;
+    public GameObject HandUI;
+    public GameObject ChipsUI;
+
+    [Header("Scene Swap")]
+    public string nextSceneName; // name of the scene to load after last element
 
     [Header("Lines (in order)")]
     [TextArea] public List<string> lines = new List<string>();
@@ -49,7 +55,7 @@ public class GenTalk1 : MonoBehaviour
 
         if (lines == null || lines.Count == 0 || textTarget == null)
         {
-            Debug.LogWarning("[GenTalk] No lines or text target set.");
+            Debug.LogWarning("[GenTalk1] No lines or text target set.");
             running = false;
             yield break;
         }
@@ -58,9 +64,28 @@ public class GenTalk1 : MonoBehaviour
         {
             yield return TypeRoutine(lines[i]);
 
-            // Enable TotalRoll when element 1 finishes
-            if (i == 1 && TotalRoll != null)
-                TotalRoll.SetActive(true);
+            if (i == 1)
+            {
+                ResetAllFingers();
+                if (HandUI != null) HandUI.SetActive(true);
+                if (TotalRoll != null) TotalRoll.SetActive(true);
+            }
+
+            if (i == 2)
+            {
+                if (ChipsUI != null) ChipsUI.SetActive(true);
+            }
+
+            if (i == 5)
+            {
+                if (HandUI != null) HandUI.SetActive(false);
+            }
+
+            // After last element, swap scene
+            if (i == lines.Count - 1 && !string.IsNullOrEmpty(nextSceneName))
+            {
+                SceneManager.LoadScene(nextSceneName);
+            }
 
             if (postLineDelay > 0f) yield return new WaitForSeconds(postLineDelay);
         }
@@ -96,6 +121,12 @@ public class GenTalk1 : MonoBehaviour
     {
         if (!keyClip || !keyAudioSource) return;
         keyAudioSource.PlayOneShot(keyClip, keyVolume);
+    }
+
+    void ResetAllFingers()
+    {
+        // Add your reset logic here
+        // Example: FingerManager.Instance?.ResetFingers();
     }
 
     public bool IsRunning() => running;
