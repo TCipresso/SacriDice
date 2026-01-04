@@ -2,7 +2,7 @@
 
 ## Fistbump Studios Developers
 - Tommaso Cipresso — Software Engineer  
-- Anthony Lina — Software Engineer / Musician  
+- Anthony Lira — Software Engineer / Musician  
 - Colby Loner — Artist  
 
 **Playable Game Link:**  
